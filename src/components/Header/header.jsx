@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import './Header.module.css'; // Если стили нужны, подключаем их
+import { useState } from 'react';
+import './App.css'
 
 const Header = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   
   const toggleTheme = () => {
     setIsDarkTheme(prevState => !prevState);
-    // Логика для переключения темы (если потребуется, например, в localStorage)
   };
 
   return (
