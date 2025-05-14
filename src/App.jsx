@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Header from './components/Header/header'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -7,7 +8,13 @@ function App() {
   
   return (
     <>
-      <div class="wrapper">
+
+	<Header />
+	</>
+  )
+}
+
+      {/* <div class="wrapper">
 			<div className="pop-exit" id="popExit">
 				<div className="pop-exit__container">
 					<div className="pop-exit__block">
@@ -753,4 +760,4 @@ function App() {
     
   
 
-export default App
+export default App */}
