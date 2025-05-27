@@ -1,9 +1,9 @@
-import React from 'react';
-import Header from './components/Header';
-import Main from './components/Main';
-import PopBrowse from './components/popups/PopBrowse';
-import PopNewCard from './components/popups/PopNewCard';
-import PopUser from './components/popups/PopUser';
+
+import Header from './components/Header/header';
+import Main from './components/Main/main';
+import PopBrowse from './popups/PopBrowse/popBrowse';
+import PopNewCard from './popups/PopNewCard/popNewCard';
+import PopUser from './popups/PopUser/PopUser';
 
 const App = () => {
   return (

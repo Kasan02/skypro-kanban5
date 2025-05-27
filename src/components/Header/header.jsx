@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 const Header = () => {
+   {console.log('Header rendered')}
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   
   const toggleTheme = () => {
@@ -53,4 +54,7 @@ const Header = () => {
   );
 };
 
+
 export default Header;
+
+
