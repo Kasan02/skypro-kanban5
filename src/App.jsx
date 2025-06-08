@@ -1,9 +1,7 @@
-
-import Header from './components/Header/header';
-import Main from './components/Main/main';
-import PopBrowse from './popups/PopBrowse/popBrowse';
-import PopNewCard from './popups/PopNewCard/popNewCard';
-import PopUser from './popups/PopUser/PopUser';
+import Header from "./components/Header/header";
+import Main from "./components/Main/main";
+import PopBrowse from './components/Popups/popBrowse/popBrowse';
+import PopNewCard from './components/Popups/popNewCard/popNewCard';
 
 const App = () => {
   return (
@@ -12,7 +10,6 @@ const App = () => {
       <Main />
       <PopBrowse />
       <PopNewCard />
-      <PopUser />
     </>
   );
 };

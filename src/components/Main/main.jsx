@@ -1,5 +1,5 @@
 
-import Column from '../Column/сolumn';
+import Column from '../Column/column';
 
 const Main = () => {
   const columns = [
