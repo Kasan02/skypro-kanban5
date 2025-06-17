@@ -1,7 +1,8 @@
-import Header from "./components/Header/header";
-import Main from "./components/Main/main";
-import PopBrowse from './components/Popups/popBrowse/popBrowse';
-import PopNewCard from './components/Popups/popNewCard/popNewCard';
+import Header from "./components/Header/header.jsx";
+import Main from "./components/Main/main.jsx";
+import PopBrowse from './components/Popups/popBrowse/popBrowse.jsx';
+import PopNewCard from './components/Popups/popNewCard/popNewCard.jsx';
+import "./App.css"
 
 const App = () => {
   return (

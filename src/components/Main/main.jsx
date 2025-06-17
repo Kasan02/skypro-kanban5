@@ -1,13 +1,30 @@
 
-import Column from '../Column/column';
+import Column from '../Column/column.jsx';
 
 const Main = () => {
   const columns = [
     {
       title: 'Без статуса',
       tasks: [
+        { theme: 'orange', category: 'Web Disign', date: '30.10.23', title: 'Название задачи' },
+        { theme: 'green', category: 'Research', date: '30.10.23', title: 'Название задачи' },
+        { theme: 'orange', category: 'Web Disign', date: '30.10.23', title: 'Название задачи' },
         { theme: 'purple', category: 'Copywriting', date: '30.10.23', title: 'Название задачи' },
-        { theme: 'orange', category: 'Web Design', date: '30.10.23', title: 'Название задачи' }
+        { theme: 'green', category: 'Research', date: '30.10.23', title: 'Название задачи' }
+      ]
+    },
+    {
+      title: 'Нужно сделать',
+      tasks: [
+        { theme: 'green', category: 'Research', date: '30.10.23', title: 'Название задачи' }
+      ]
+    },
+    {
+      title: 'В работе',
+      tasks: [
+        { theme: 'green', category: 'Research', date: '30.10.23', title: 'Название задачи' },
+        { theme: 'purple', category: 'Copywriting', date: '30.10.23', title: 'Название задачи' },
+        { theme: 'orange', category: 'Web Disign', date: '30.10.23', title: 'Название задачи' }
       ]
     },
     {

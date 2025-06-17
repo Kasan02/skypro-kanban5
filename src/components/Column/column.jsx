@@ -1,25 +1,28 @@
-import Card from '../Card/card';
+import Card from '../Card/card.jsx';
 
-const Column = ({ title, children }) => {
+const Column = ({ title, tasks }) => {
   return (
     <div className="main__column">
       <div className="column__title">
         <p>{title}</p>
       </div>
       <div className="cards">
-        {children || (
-          <>
-            <Card title="Название задачи" theme="purple" date="30.10.23" />
-            <Card title="Название задачи" theme="orange" date="30.10.23" />
-            <Card title="Название задачи" theme="green" date="30.10.23" />
-          </>
-        )}
+        {tasks.map((task, index) => (
+          <Card
+            key={index}
+            title={task.title}
+            theme={task.theme}
+            date={task.date}
+            category={task.category} 
+          />
+        ))}
       </div>
     </div>
   );
 };
 
 export default Column;
+
 
 
 
