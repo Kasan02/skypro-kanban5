@@ -1,6 +1,6 @@
 import Card from '../Card/card.jsx';
 
-const Column = ({ title, tasks }) => {
+const Column = ({ title, tasks, isLoading }) => {
   return (
     <div className="main__column">
       <div className="column__title">
@@ -13,7 +13,8 @@ const Column = ({ title, tasks }) => {
             title={task.title}
             theme={task.theme}
             date={task.date}
-            category={task.category} 
+            category={task.category}
+            isLoading={isLoading}
           />
         ))}
       </div>
@@ -22,6 +23,7 @@ const Column = ({ title, tasks }) => {
 };
 
 export default Column;
+
 
 
 

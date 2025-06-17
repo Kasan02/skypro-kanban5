@@ -40,7 +40,6 @@ const PopBrowse = () => {
                 </div>
               </form>
 
-              {/* Импортируем календарь сюда */}
               <Calendar />
             </div>
 
