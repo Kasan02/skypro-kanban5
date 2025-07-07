@@ -14,6 +14,40 @@ a:visited {
   text-decoration: none;
   cursor: pointer;
 }
+body.dark {
+  background: rgb(32, 32, 44);
+  color: #fff;
+}
+
+body.dark .header {
+  background: rgb(32, 32, 44);
+  color: #fff;
+}
+
+body.dark .card {
+  background: rgb(32, 32, 44);
+  color: #fff; /* белый текст */
+  border: 1px solid #444; /* если нужна рамка */
+}
+
+body.dark .card h1,
+body.dark .card h2,
+body.dark .card h3,
+body.dark .card h4,
+body.dark .card h5,
+body.dark .card h6,
+body.dark .card p,
+body.dark .card a,
+body.dark .card span {
+  color: #fff;
+}
+
+body.dark main {
+  background-color: #000; /* самый черный фон */
+  color: #fff; /* белый текст */
+}
+
+
 
 button,
 ._btn {
@@ -777,7 +811,7 @@ body {
   padding: 0;
 }
 .header__pop-user-set {
-  display: none;
+  display: block;
   position: absolute;
   top: 61px;
   right: 0;
@@ -908,6 +942,68 @@ body {
   color: #94A6BE;
   letter-spacing: 0.2px;
 }
+
+.skeleton {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-box {
+  position: relative;
+  background: linear-gradient(90.00deg, rgb(193, 205, 220) -6.316%,rgb(233, 238, 247) 46.754%,rgb(193, 205, 220) 106.458%);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skeleton-box::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -150px; bottom: 0;
+  width: 150px;
+  background: linear-gradient(90.00deg, rgb(193, 205, 220) -6.316%,rgb(233, 238, 247) 46.754%,rgb(193, 205, 220) 106.458%);
+  animation: loading-shimmer 1.5s infinite;
+}
+
+.skeleton-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.skeleton-dots > div {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a3a3a;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-dots > div::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -20px; bottom: 0; right: 0;
+  width: 20px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
 
 @media screen and (max-width: 1200px) {
   .main__block {

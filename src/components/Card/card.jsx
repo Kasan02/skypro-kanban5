@@ -1,4 +1,25 @@
-const Card = ({ theme, category, date, title }) => {
+const Card = ({ theme, category, date, title, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="cards__item">
+        <div className="cards__card card skeleton">
+          <div className="card__group">
+            <div className="card__theme skeleton-box" style={{ width: '80px', height: '20px' }}></div>
+            <div className="card__btn skeleton-dots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <div className="card__content">
+            <div className="skeleton-box" style={{ width: '60%', height: '24px', marginBottom: '12px' }}></div>
+            <div className="skeleton-box" style={{ width: '40%', height: '18px' }}></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="cards__item">
       <div className="cards__card card">
@@ -39,4 +60,6 @@ const Card = ({ theme, category, date, title }) => {
 };
 
 export default Card;
+
+
 
