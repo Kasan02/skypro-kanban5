@@ -747,7 +747,7 @@ body {
   display: none;
 }
 
-.header {
+/* .header {
   width: 100%;
   margin: 0 auto;
   background-color: #FFFFFF;
@@ -824,7 +824,7 @@ body {
   padding: 34px;
   text-align: center;
   z-index: 2;
-}
+} */
 
 .main {
   width: 100%;
