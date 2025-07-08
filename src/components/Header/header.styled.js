@@ -20,7 +20,8 @@ export const HeaderBlock = styled.div`
 `;
 export const Logo = styled.div`
   img {
-    height: 40px;
+    height: auto;
+    width: 85px;
   }
 `;
 export const Nav = styled.nav`
@@ -65,13 +66,13 @@ export const Popup = styled.div`
   position: absolute;
   top: 110%;
   right: 0;
-  width: 240px;
+  width: 213px;
   background: ${({ $mode }) => ($mode === 'dark' ? '#2e2e2e' : '#fff')};
   color: ${({ $mode }) => ($mode === 'dark' ? '#eee' : '#111')};
   border: 1px solid ${({ $mode }) => ($mode === 'dark' ? '#444' : '#ccc')};
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  padding: 16px;
+  padding: 34px;
   z-index: 999;
   transition: all 0.2s ease;
   p {
@@ -90,25 +91,27 @@ export const Popup = styled.div`
     cursor: pointer;
   }
   button {
-    width: 100%;
+    width: 72px;
     margin-top: 10px;
-    background:#f44336;
-    border: none;
+    margin-left: 35.5px;
+    background: white;
+    box-sizing: border-box;
+    border: 1px solid rgb(86, 94, 239);
+    border-radius: 4px;
     color: white;
     padding: 10px;
-    border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.3s ease;
     a {
-      color: white;
+      color: black;
       text-decoration: none;
       display: block;
       width: 100%;
       text-align: center;
     }
     &:hover {
-      background:#d32f2f;
+      background: gray;
     }
   }
 `;
