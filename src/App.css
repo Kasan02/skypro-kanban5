@@ -857,7 +857,7 @@ body {
   text-transform: uppercase;
 }
 
-.cards {
+/* .cards {
   width: 100%;
   display: block;
   position: relative;
@@ -919,20 +919,20 @@ body {
   line-height: 18px;
   color: #000000;
   margin-bottom: 10px;
-}
-.card__content {
+} */
+/* .card__content {
   height: 64px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-}
-.card__date {
+} */
+/* .card__date {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-.card__date svg {
+} */
+/* .card__date svg {
   width: 13px;
 }
 .card__date p {
@@ -941,7 +941,7 @@ body {
   line-height: 13px;
   color: #94A6BE;
   letter-spacing: 0.2px;
-}
+} */
 
 .skeleton {
   background-color: rgb(255, 255, 255);
@@ -995,14 +995,14 @@ body {
   animation: loading-shimmer 1.5s infinite;
 }
 
-@keyframes loading-shimmer {
+/* @keyframes loading-shimmer {
   0% {
     left: -150px;
   }
   100% {
     left: 100%;
   }
-}
+} */
 
 
 @media screen and (max-width: 1200px) {
