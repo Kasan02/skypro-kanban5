@@ -1,18 +1,10 @@
-import { Outlet } from "react-router-dom";
+// MainPage.jsx
+import Main from "../../components/Main/main.jsx";
 
-const MainPage = ({ loading }) => {
-  return (
-    <div>
-      {loading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <>
-          <Outlet />
-        </>
-      )}
-    </div>
-  );
+const MainPage = () => {
+  return <Main />;
 };
 
 export default MainPage;
+
 

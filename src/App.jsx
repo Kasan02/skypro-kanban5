@@ -1,9 +1,6 @@
 import { useState } from "react";
-import Header from "./components/Header/header.jsx";
-import Main from "./components/Main/main.jsx";
-import PopBrowse from './components/Popups/popBrowse/popBrowse.jsx';
-import PopNewCard from './components/Popups/popNewCard/popNewCard.jsx';
-import AppRoutes from "./AppRoutes.jsx";
+import AppRoutes from "./AppRoutes";
+import Header from "./components/Header/header"; 
 import "./App.css";
 
 const App = () => {
@@ -11,20 +8,14 @@ const App = () => {
 
   return (
     <>
-      {isAuth ? (
-        <>
-          <Header isAuth={isAuth} setIsAuth={setIsAuth} />
-          <Main />
-          <PopBrowse />
-          <PopNewCard />
-        </>
-      ) : (
-        // Если не авторизован, показываем только маршруты входа/регистрации
-        <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
-      )}
+      {isAuth && <Header isAuth={isAuth} setIsAuth={setIsAuth} />}
+      <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
     </>
   );
 };
 
 export default App;
+
+
+
 

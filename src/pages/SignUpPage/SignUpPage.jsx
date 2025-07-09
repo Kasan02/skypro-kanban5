@@ -25,7 +25,6 @@ const SignUpPage = ({ setIsAuth }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Здесь можно добавить логику регистрации
     setIsAuth(true);
     navigate("/");
   };

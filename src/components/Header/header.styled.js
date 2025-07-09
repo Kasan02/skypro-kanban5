@@ -10,7 +10,6 @@ export const HeaderWrapper = styled.header.attrs(() => ({
   padding: 10px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-  /* Вложенным элементам передаём цвет */
   *, *::before, *::after {
     color: inherit;
   }

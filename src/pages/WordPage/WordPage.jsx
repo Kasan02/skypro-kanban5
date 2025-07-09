@@ -3,13 +3,11 @@ import { useParams } from 'react-router-dom';
 const words = [
   { id: '1', word: 'apple', translation: 'яблоко' },
   { id: '2', word: 'car', translation: 'машина' },
-  // ... другие слова
 ];
 
 const WordPage = () => {
   const { id } = useParams();
 
-  // Найти слово по id
   const currentWord = words.find(w => w.id === id);
 
   if (!currentWord) {
