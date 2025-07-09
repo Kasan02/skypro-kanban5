@@ -11,17 +11,20 @@ const App = () => {
 
   return (
     <>
-      {isAuth && (
+      {isAuth ? (
         <>
           <Header isAuth={isAuth} setIsAuth={setIsAuth} />
           <Main />
           <PopBrowse />
           <PopNewCard />
         </>
+      ) : (
+        // Если не авторизован, показываем только маршруты входа/регистрации
+        <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
       )}
-      <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
     </>
   );
 };
 
 export default App;
+
