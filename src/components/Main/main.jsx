@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { cards } from '../../data.js';
 import Column from '../Column/column.jsx';
 
+import { MainWrapper, Content } from './main.styled.js';
+
 const getThemeColor = (category) => {
   switch (category.toLowerCase()) {
     case 'web disign':
@@ -53,8 +55,8 @@ const Main = () => {
   };
 
   return (
-    <main className="main">
-      <div className="main__content">
+    <MainWrapper>
+      <Content>
         {columns.map((column, index) => (
           <Column
             key={index}
@@ -63,12 +65,13 @@ const Main = () => {
             isLoading={isLoading}
           />
         ))}
-      </div>
-    </main>
+      </Content>
+    </MainWrapper>
   );
 };
 
 export default Main;
+
 
 
 

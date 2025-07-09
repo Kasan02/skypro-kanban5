@@ -1,12 +1,13 @@
 import Card from '../Card/card.jsx';
+import { ColumnWrapper, ColumnTitle, CardsWrapper } from './column.styled.js';
 
 const Column = ({ title, tasks, isLoading }) => {
   return (
-    <div className="main__column">
-      <div className="column__title">
+    <ColumnWrapper>
+      <ColumnTitle>
         <p>{title}</p>
-      </div>
-      <div className="cards">
+      </ColumnTitle>
+      <CardsWrapper>
         {tasks.map((task, index) => (
           <Card
             key={index}
@@ -14,15 +15,16 @@ const Column = ({ title, tasks, isLoading }) => {
             theme={task.theme}
             date={task.date}
             category={task.category}
-            isLoading={isLoading}
+            loading={isLoading} 
           />
         ))}
-      </div>
-    </div>
+      </CardsWrapper>
+    </ColumnWrapper>
   );
 };
 
 export default Column;
+
 
 
 

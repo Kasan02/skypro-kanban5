@@ -1,5 +1,7 @@
-const Button = ({text}) => {
-    return <button className="button">{text}</button>
+import { StyledButton } from './button.styled';
+
+const Button = ({ text, ...props }) => {
+  return <StyledButton {...props}>{text}</StyledButton>;
 };
 
-export default Button
+export default Button;
