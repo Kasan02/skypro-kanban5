@@ -1,67 +1,42 @@
-import { useEffect, useState } from 'react';
-import { cards } from '../../data.js';
-import Column from '../Column/column.jsx';
+import { useState, useEffect } from 'react';
+import Column from '../Column/column';
+import { MainWrapper, Content } from './main.styled';
 
-import { MainWrapper, Content } from './main.styled.js';
+const mockTasks = [
+  { title: 'Создать дизайн главной страницы', theme: 'orange', date: '2025-07-10', category: 'Web Design', status: 'Backlog' },
+  { title: 'Написать статью про ИИ', theme: 'purple', date: '2025-07-12', category: 'Copywriting', status: 'In Progress' },
+  { title: 'Собрать отчёт по аналитике', theme: 'green', date: '2025-07-15', category: 'Research', status: 'Done' },
+];
 
-const getThemeColor = (category) => {
-  switch (category.toLowerCase()) {
-    case 'web disign':
-      return 'orange';
-    case 'research':
-      return 'green';
-    case 'copywritting':
-    case 'copywriting':
-      return 'purple';
-    default:
-      return 'gray';
-  }
-};
+const columns = [
+  { id: 1, title: 'Бэклог', status: 'Backlog' },
+  { id: 2, title: 'В процессе', status: 'In Progress' },
+  { id: 3, title: 'Готово', status: 'Done' },
+];
 
 const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [tasksByStatus, setTasksByStatus] = useState({});
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
+      const grouped = columns.reduce((acc, col) => {
+        acc[col.status] = mockTasks.filter(task => task.status === col.status);
+        return acc;
+      }, {});
+      setTasksByStatus(grouped);
       setIsLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    }, 1000); // симулируем загрузку
   }, []);
-
-  const statuses = [...new Set(cards.map(card => card.status))];
-
-  const columns = statuses.map(status => {
-    const tasks = cards
-      .filter(card => card.status === status)
-      .map(card => ({
-        theme: getThemeColor(card.topic || card.theme || ''),
-        category: card.topic || card.theme || '',
-        title: card.title,
-        date: card.date
-      }));
-
-    return {
-      title: status,
-      tasks
-    };
-  });
-
-  const skeletonTask = {
-    theme: 'gray',
-    category: '',
-    title: '',
-    date: ''
-  };
 
   return (
     <MainWrapper>
       <Content>
-        {columns.map((column, index) => (
+        {columns.map((col) => (
           <Column
-            key={index}
-            title={column.title}
-            tasks={isLoading ? Array(3).fill(skeletonTask) : column.tasks}
+            key={col.id}
+            title={col.title}
+            tasks={tasksByStatus[col.status] || []}
             isLoading={isLoading}
           />
         ))}
@@ -71,6 +46,9 @@ const Main = () => {
 };
 
 export default Main;
+
+
+
 
 
 

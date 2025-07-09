@@ -12,7 +12,8 @@ export const MainWrapper = styled.main`
 
 export const Content = styled.div`
   display: flex;
-  gap: 19px; 
+  gap: 19px;
   flex-wrap: nowrap;
   overflow-x: auto;
 `;
+

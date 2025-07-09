@@ -1,10 +1,31 @@
-const BaseInput = ({ tag: Tag = "input", className, as: StyledComponent, ...props }) => {
-  return StyledComponent ? (
-    <StyledComponent as={Tag} className={className} {...props} />
-  ) : (
-    <Tag className={className} {...props} />
+import React from "react";
+import { StyledInput, StyledTextarea } from "./BaseInput.styled";
+
+const BaseInput = ({
+  tag = "input",
+  id,
+  name,
+  placeholder = "",
+  type = "text",
+  error = false,
+  onChange,
+  value,
+}) => {
+  const Component = tag === "textarea" ? StyledTextarea : StyledInput;
+
+  return (
+    <Component
+      id={id}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      $error={error}
+      onChange={onChange}
+      value={value}
+    />
   );
 };
 
 export default BaseInput;
+
 

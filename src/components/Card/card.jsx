@@ -14,7 +14,7 @@ import {
 } from './card.styled';
 
 const Card = ({ title, theme, date, category, loading }) => {
-  if (loading) {
+  if (loading || !title) {
     return (
       <SkeletonCard>
         <SkeletonBox style={{ height: '20px', width: '50%' }} />
@@ -57,6 +57,7 @@ const Card = ({ title, theme, date, category, loading }) => {
 };
 
 export default Card;
+
 
 
 

@@ -34,7 +34,6 @@ export const CardContainer = styled.div`
   justify-content: stretch;
   padding: 15px 13px 19px;
 
-  /* Темная тема */
   body.dark & {
     background: rgb(32, 32, 44);
     color: #fff;
@@ -112,20 +111,18 @@ export const CardTitle = styled.h3`
 `;
 
 export const CardContent = styled.div`
-  height: 64px;
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const CardDate = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-top: 36px;
 
-  svg {
+  img {
     width: 13px;
   }
 
@@ -144,6 +141,8 @@ export const SkeletonCard = styled.div`
   padding: 16px;
   overflow: hidden;
   position: relative;
+  width: 220px;
+  height: 130px;
 
   body.dark & {
     background-color: rgb(32, 32, 44);
@@ -172,6 +171,7 @@ export const SkeletonBox = styled.div`
 export const SkeletonDots = styled.div`
   display: flex;
   gap: 6px;
+  margin-top: 10px;
 
   > div {
     width: 6px;
@@ -194,3 +194,4 @@ export const SkeletonDots = styled.div`
     }
   }
 `;
+
