@@ -13,7 +13,7 @@ import {
   SkeletonDots
 } from './card.styled';
 
-const Card = ({ title, theme, date, loading }) => {
+const Card = ({ title, theme, date, category, loading }) => {
   if (loading) {
     return (
       <SkeletonCard>
@@ -35,7 +35,7 @@ const Card = ({ title, theme, date, loading }) => {
         <CardContainer>
           <CardGroup>
             <CardTheme className={`_${theme}`}>
-              <p>{theme}</p>
+              <p>{category}</p>
             </CardTheme>
             <CardBtn>
               <div />
@@ -46,7 +46,7 @@ const Card = ({ title, theme, date, loading }) => {
           <CardTitle>{title}</CardTitle>
           <CardContent>
             <CardDate>
-              <svg /* иконка календаря */ />
+              <img src="/images/calendar-clear-outline.svg" alt="calendar icon" />
               <p>{date}</p>
             </CardDate>
           </CardContent>
@@ -57,6 +57,7 @@ const Card = ({ title, theme, date, loading }) => {
 };
 
 export default Card;
+
 
 
 
