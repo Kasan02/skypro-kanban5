@@ -10,15 +10,16 @@ import {
   UserButton,
   Popup,
   UserButtonWrapper,
-  ThemeLabel
+  ThemeLabel,
 } from "./header.styled";
 
-const Header = ({ isAuth, setIsAuth }) => {
+const Header = ({ isAuth, setIsAuth, user, setUser }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const popupRef = useRef(null);
   const navigate = useNavigate();
 
+  // Загружаем тему из localStorage при монтировании
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
@@ -26,6 +27,7 @@ const Header = ({ isAuth, setIsAuth }) => {
     }
   }, []);
 
+  // Обновляем класс на body и localStorage при смене темы
   useEffect(() => {
     const body = document.body;
     if (isDarkTheme) {
@@ -37,10 +39,13 @@ const Header = ({ isAuth, setIsAuth }) => {
     }
   }, [isDarkTheme]);
 
+  // Переключение темы
   const toggleTheme = () => setIsDarkTheme((prev) => !prev);
 
+  // Открыть/закрыть попап пользователя
   const handleUserClick = () => setShowUserPopup((prev) => !prev);
 
+  // Закрыть попап при клике вне его области
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -51,14 +56,24 @@ const Header = ({ isAuth, setIsAuth }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Выход — очистка авторизации и пользовательских данных, редирект на вход
   const handleLogout = (e) => {
     e.preventDefault();
     setIsAuth(false);
+    setUser(null);
+    setShowUserPopup(false);
     navigate("/sign-in");
   };
 
+  // Переход на страницу входа
   const handleLogin = () => {
     navigate("/sign-in");
+  };
+
+  // Клик по логотипу — переход на главную
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    navigate("/");
   };
 
   return (
@@ -66,7 +81,7 @@ const Header = ({ isAuth, setIsAuth }) => {
       <Container>
         <HeaderBlock>
           <Logo>
-            <a href="/" target="_self" rel="noopener noreferrer">
+            <a href="/" onClick={handleLogoClick} rel="noopener noreferrer">
               <img
                 src={isDarkTheme ? "images/logo_dark.png" : "images/logo.png"}
                 alt="logo"
@@ -75,21 +90,21 @@ const Header = ({ isAuth, setIsAuth }) => {
           </Logo>
 
           <Nav>
-            {isAuth ? (
+            {isAuth && user ? (
               <>
                 <MainButton id="btnMainNew">
                   <a href="#popNewCard">Создать новую задачу</a>
                 </MainButton>
 
                 <UserButtonWrapper>
-                  <UserButton onClick={handleUserClick}>
-                    Ivan Ivanov {showUserPopup ? "▲" : "▼"}
+                  <UserButton onClick={handleUserClick} aria-haspopup="true" aria-expanded={showUserPopup}>
+                    {user.name} {showUserPopup ? "▲" : "▼"}
                   </UserButton>
 
                   {showUserPopup && (
                     <Popup ref={popupRef} $mode={isDarkTheme ? "dark" : "light"}>
-                      <p>Ivan Ivanov</p>
-                      <p>ivan.ivanov@gmail.com</p>
+                      <p>{user.name}</p>
+                      <p>{user.email}</p>
 
                       <div className="pop-user-set__theme">
                         <ThemeLabel $mode={isDarkTheme ? "dark" : "light"}>
@@ -99,6 +114,7 @@ const Header = ({ isAuth, setIsAuth }) => {
                           type="checkbox"
                           checked={isDarkTheme}
                           onChange={toggleTheme}
+                          aria-label="Переключить темную тему"
                         />
                       </div>
 
@@ -120,6 +136,9 @@ const Header = ({ isAuth, setIsAuth }) => {
 };
 
 export default Header;
+
+
+
 
 
 

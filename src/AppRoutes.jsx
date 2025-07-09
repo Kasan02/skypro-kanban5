@@ -7,16 +7,25 @@ import MainPage from "./pages/MainPage/MainPage";
 import WordPage from "./pages/WordPage/WordPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
 
-const AppRoutes = ({ isAuth, setIsAuth }) => {
+const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
   return (
     <Routes>
-      <Route path="/sign-in" element={<SignInPage setIsAuth={setIsAuth} />} />
-      <Route path="/sign-up" element={<SignUpPage isSignUp setIsAuth={setIsAuth} />} />
+      <Route
+        path="/sign-in"
+        element={<SignInPage setIsAuth={setIsAuth} setUser={setUser} />}
+      />
+      <Route
+        path="/sign-up"
+        element={<SignUpPage setIsAuth={setIsAuth} setUser={setUser} />}
+      />
 
       <Route element={<PrivateRoute isAuth={isAuth} />}>
         <Route path="/" element={<MainPage />} />
         <Route path="/word/:id" element={<WordPage />} />
-        <Route path="/exit" element={<ExitPage setIsAuth={setIsAuth} />} />
+        <Route
+          path="/exit"
+          element={<ExitPage setIsAuth={setIsAuth} setUser={setUser} />}
+        />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
@@ -25,6 +34,9 @@ const AppRoutes = ({ isAuth, setIsAuth }) => {
 };
 
 export default AppRoutes;
+
+
+
 
 
 

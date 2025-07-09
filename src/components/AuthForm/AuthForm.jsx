@@ -3,28 +3,25 @@ import { useNavigate, Link } from "react-router-dom";
 import { signIn, signUp } from "../services/auth";
 import BaseInput from "./BaseInput";
 import BaseButton from "./BaseButton";
+import { ErrorText } from "./AuthForm.styled"; // ✅ стиль ошибки
 
 const AuthForm = ({ isSignUp, setIsAuth }) => {
   const navigate = useNavigate();
 
-  // Состояние всех полей формы
   const [formData, setFormData] = useState({
     name: "",
     login: "",
     password: "",
   });
 
-  // Состояние ошибок по каждому полю
   const [errors, setErrors] = useState({
     name: false,
     login: false,
     password: false,
   });
 
-  // Текст общей ошибки для пользователя
   const [error, setError] = useState("");
 
-  // Валидация полей формы
   const validateForm = () => {
     const newErrors = { name: false, login: false, password: false };
     let isValid = true;
@@ -52,7 +49,6 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
     return isValid;
   };
 
-  // Обработка изменения в любом поле формы
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -60,10 +56,8 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
     setError("");
   };
 
-  // Отправка формы
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
@@ -74,10 +68,10 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
       if (data) {
         setIsAuth(true);
         localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate("/");
+        navigate("/main"); // ✅ корректный путь после входа
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Ошибка авторизации");
     }
   };
 
@@ -119,21 +113,23 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
                 onChange={handleChange}
               />
             </div>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+
+            {/* ✅ Отображение ошибки */}
+            {error && <ErrorText>{error}</ErrorText>}
+
             <BaseButton
               type="secondary"
               fullWidth={true}
               text={isSignUp ? "Зарегистрироваться" : "Войти"}
             />
-            {!isSignUp ? (
-              <div className="form-group">
-                <p>Нужно зарегистрироваться? <Link to="/sign-up">Регистрируйтесь здесь</Link></p>
-              </div>
-            ) : (
-              <div className="form-group">
+
+            <div className="form-group">
+              {isSignUp ? (
                 <p>Есть аккаунт? <Link to="/sign-in">Войдите здесь</Link></p>
-              </div>
-            )}
+              ) : (
+                <p>Нужно зарегистрироваться? <Link to="/sign-up">Регистрируйтесь здесь</Link></p>
+              )}
+            </div>
           </form>
         </div>
       </div>
@@ -142,3 +138,4 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
 };
 
 export default AuthForm;
+

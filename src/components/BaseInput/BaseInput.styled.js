@@ -11,15 +11,18 @@ export const StyledInput = styled.input`
   border: 0.7px solid rgba(148, 166, 190, 0.4);
   outline: none;
   padding: 10px 8px;
-  color: #ffffff;
-  font-family: "Roboto", sans-serif;
+  
+  color: rgb(0, 0, 0); /* черный цвет вводимого текста */
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.28px;
+  line-height: 150%; /* 21px по высоте */
+  letter-spacing: -2%; /* -0.28px можно примерно */
+  text-align: left;
 
   &::placeholder {
-    color: #94a6be;
+    color: rgb(0, 0, 0); /* черный цвет плейсхолдера */
+    opacity: 0.6; /* чуть прозрачнее */
   }
 
   &:focus {
@@ -37,16 +40,18 @@ export const StyledTextarea = styled.textarea`
   border: 0.7px solid rgba(148, 166, 190, 0.4);
   outline: none;
   padding: 10px 8px;
-  color: #ffffff;
-  font-family: "Roboto", sans-serif;
+
+  color: rgb(0, 0, 0);
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.28px;
-  resize: vertical;
+  line-height: 150%;
+  letter-spacing: -2%;
+  text-align: left;
 
   &::placeholder {
-    color: #94a6be;
+    color: rgb(0, 0, 0);
+    opacity: 0.6;
   }
 
   &:focus {
@@ -55,6 +60,7 @@ export const StyledTextarea = styled.textarea`
 
   ${({ $error }) => $error && errorStyle}
 `;
+
 
 
 

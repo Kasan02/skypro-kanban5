@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Bg = styled.div`
   width: 100%;
@@ -25,7 +25,7 @@ export const ContainerSignin = styled.div`
 `;
 
 export const ModalBlock = styled.div`
-  background-color:rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
   max-width: 368px;
   width: 100%;
   padding: 50px 60px;
@@ -74,7 +74,7 @@ export const Input = styled.input`
   border: 0.7px solid rgba(148, 166, 190, 0.4);
   outline: none;
   padding: 10px 8px;
-  color: #ffffff;
+  color: black;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -88,6 +88,13 @@ export const Input = styled.input`
   &:focus {
     border-color: #565eef;
   }
+
+  ${({ hasError }) =>
+    hasError &&
+    css`
+      border: 0.7px solid rgb(248, 77, 77);
+      box-sizing: border-box;
+    `}
 `;
 
 export const BtnEnter = styled.button`
@@ -132,5 +139,17 @@ export const FormGroup = styled.div`
     cursor: pointer;
   }
 `;
+
+export const ErrorMessage = styled.div`
+  color: rgb(248, 77, 77);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 150%;
+  text-align: center;
+  margin-top: -15px;
+  margin-bottom: 10px;
+`;
+
 
 
