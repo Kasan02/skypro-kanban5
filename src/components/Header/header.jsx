@@ -10,6 +10,7 @@ import {
   UserButton,
   Popup,
   UserButtonWrapper,
+  ThemeLabel
 } from "./header.styled";
 
 const Header = ({ isAuth, setIsAuth }) => {
@@ -79,22 +80,28 @@ const Header = ({ isAuth, setIsAuth }) => {
                 <MainButton id="btnMainNew">
                   <a href="#popNewCard">Создать новую задачу</a>
                 </MainButton>
+
                 <UserButtonWrapper>
                   <UserButton onClick={handleUserClick}>
                     Ivan Ivanov {showUserPopup ? "▲" : "▼"}
                   </UserButton>
+
                   {showUserPopup && (
                     <Popup ref={popupRef} $mode={isDarkTheme ? "dark" : "light"}>
                       <p>Ivan Ivanov</p>
                       <p>ivan.ivanov@gmail.com</p>
+
                       <div className="pop-user-set__theme">
-                        <p>Темная тема</p>
+                        <ThemeLabel $mode={isDarkTheme ? "dark" : "light"}>
+                          Темная тема
+                        </ThemeLabel>
                         <input
                           type="checkbox"
                           checked={isDarkTheme}
                           onChange={toggleTheme}
                         />
                       </div>
+
                       <button type="button" onClick={handleLogout}>
                         Выйти
                       </button>
@@ -103,9 +110,7 @@ const Header = ({ isAuth, setIsAuth }) => {
                 </UserButtonWrapper>
               </>
             ) : (
-              <MainButton onClick={handleLogin}>
-                Войти
-              </MainButton>
+              <MainButton onClick={handleLogin}>Войти</MainButton>
             )}
           </Nav>
         </HeaderBlock>
@@ -115,4 +120,8 @@ const Header = ({ isAuth, setIsAuth }) => {
 };
 
 export default Header;
+
+
+
+
 

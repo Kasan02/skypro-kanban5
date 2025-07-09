@@ -1,5 +1,3 @@
-import React from "react";
-
 const BaseButton = ({ onClick, type = "button", className, fullWidth, text }) => {
   return (
     <button
