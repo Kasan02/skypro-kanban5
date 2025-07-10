@@ -2,9 +2,11 @@ import Column from "../Column/column";
 import { MainWrapper, Content } from "./main.styled";
 
 const columns = [
-  { id: 1, title: "Бэклог", status: "Backlog" },
-  { id: 2, title: "В процессе", status: "In Progress" },
-  { id: 3, title: "Готово", status: "Done" },
+  { id: 1, title: "Без статуса", status: "Без статуса" },
+  { id: 2, title: "Нужно сделать", status: "Нужно сделать" },
+  { id: 3, title: "В работе", status: "В работе" },
+  { id: 4, title: "Тестирование", status: "Тестирование" },
+  { id: 5, title: "Готово", status: "Готово" },
 ];
 
 const Main = ({ tasks = [], loading = false, error = "" }) => {

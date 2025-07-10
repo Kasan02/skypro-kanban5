@@ -14,27 +14,29 @@ const Column = ({ title, tasks, isLoading }) => {
         <p>{title}</p>
       </ColumnTitle>
       <CardsWrapper>
-        {isLoading
-          ? Array.from({ length: 3 }).map((_, i) => <Card key={i} loading={true} />)
-          : tasks.length > 0
-          ? tasks.map((task, index) => (
-              <Card
-                key={task.id || index}  // Лучше использовать уникальный id, если есть
-                title={task.title}
-                theme={themeMap[task.category] || "green"}
-                date={task.date}
-                category={task.category}
-                loading={false}
-              />
-            ))
-          : <p style={{ padding: '10px 13px', color: '#94A6BE' }}>Нет задач</p>
-        }
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, i) => <Card key={`loading-${i}`} loading={true} />)
+        ) : tasks.length > 0 ? (
+          tasks.map((task, index) => (
+            <Card
+              key={task.id !== undefined ? task.id : `task-${index}`} // надежный ключ
+              title={task.title}
+              theme={themeMap[task.category] || "green"}
+              date={task.date}
+              category={task.category}
+              loading={false}
+            />
+          ))
+        ) : (
+          <p style={{ padding: '10px 13px', color: '#94A6BE' }}>Нет задач</p>
+        )}
       </CardsWrapper>
     </ColumnWrapper>
   );
 };
 
 export default Column;
+
 
 
 

@@ -3,15 +3,12 @@ const BASE_URL = "https://wedev-api.sky.pro/api";
 
 async function request(path, options = {}) {
   const url = BASE_URL + path;
-
-  // Скопируем заголовки из options
   const headers = options.headers ? { ...options.headers } : {};
 
   // Пути, для которых НЕ нужно ставить Content-Type
-  // Добавили "/kanban"
   const noContentTypePaths = ["/user/login", "/user", "/kanban"];
 
-  // Если есть body и заголовок не указан и путь не в списке — ставим JSON
+  // если у нас JSON-body и путь не в исключениях — устанавливаем заголовок
   if (
     options.body &&
     !headers["Content-Type"] &&
@@ -20,7 +17,7 @@ async function request(path, options = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  // Добавляем Authorization для всех запросов, кроме логина/регистрации
+  // всегда подставляем токен для авторизованных маршрутов
   const token = localStorage.getItem("token");
   if (token && !headers["Authorization"]) {
     headers["Authorization"] = `Bearer ${token}`;
@@ -28,7 +25,7 @@ async function request(path, options = {}) {
 
   const config = { ...options, headers };
 
-  // Преобразуем object -> JSON, но не для FormData
+  // сериализуем body в JSON, если это простой объект
   if (
     options.body &&
     typeof options.body === "object" &&
@@ -67,12 +64,10 @@ export const api = {
 
   getTasks: () => request("/kanban", { method: "GET" }),
 
-  getTaskById: (id) => request(`/kanban/${id}`, { method: "GET" }),
-
   addTask: (taskData) =>
     request("/kanban", {
       method: "POST",
-      body: taskData, // отправляем JS-объект
+      body: taskData, // просто JS-объект, без Content-Type
     }),
 
   updateTask: (id, taskData) =>
@@ -86,12 +81,11 @@ export const api = {
       method: "DELETE",
     }),
 
-  getUsers: () => request("/user", { method: "GET" }),
-
   logout: () => {
     localStorage.removeItem("token");
   },
 };
+
 
 
 
