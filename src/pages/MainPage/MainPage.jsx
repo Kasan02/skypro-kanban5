@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Main from "../../components/Main/Main";
+import Notification from "../../components/Notification/Notification";
 import { api } from "../../services/api";
 
 const MainPage = () => {
@@ -9,6 +10,9 @@ const MainPage = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // Используем useCallback для onCloseNotification, чтобы не создавать функцию заново каждый рендер
+  const clearError = useCallback(() => setError(""), []);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -20,8 +24,6 @@ const MainPage = () => {
         }
 
         const data = await api.getTasks();
-        console.log("Полученные задачи:", data);
-
         if (!data?.tasks || !Array.isArray(data.tasks)) {
           throw new Error("Некорректный формат задач");
         }
@@ -39,11 +41,15 @@ const MainPage = () => {
   }, [navigate]);
 
   return (
-    <Main tasks={tasks} loading={loading} error={error} />
+    <>
+      <Main tasks={tasks} loading={loading} error={error} />
+      <Notification message={error} type="error" onClose={clearError} />
+    </>
   );
 };
 
 export default MainPage;
+
 
 
 
