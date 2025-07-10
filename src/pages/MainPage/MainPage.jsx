@@ -39,15 +39,12 @@ const MainPage = () => {
   }, [navigate]);
 
   return (
-    <Main
-      tasks={tasks}
-      loading={loading}
-      error={error}
-    />
+    <Main tasks={tasks} loading={loading} error={error} />
   );
 };
 
-export default MainPage; 
+export default MainPage;
+
 
 
 

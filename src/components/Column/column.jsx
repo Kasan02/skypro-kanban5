@@ -19,7 +19,7 @@ const Column = ({ title, tasks, isLoading }) => {
           : tasks.length > 0
           ? tasks.map((task, index) => (
               <Card
-                key={index}
+                key={task.id || index}  // Лучше использовать уникальный id, если есть
                 title={task.title}
                 theme={themeMap[task.category] || "green"}
                 date={task.date}
@@ -35,6 +35,7 @@ const Column = ({ title, tasks, isLoading }) => {
 };
 
 export default Column;
+
 
 
 
