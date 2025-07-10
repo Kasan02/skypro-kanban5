@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getTasks } from "../../services/tasks";
+import { api } from "../../services/api";
 import Container from "../../components/Container/container.jsx";
 import Main from "../../components/Main/main.jsx";
 import { Outlet } from "react-router-dom";
@@ -16,8 +16,8 @@ const MainPage = () => {
     try {
       setLoading(true);
       setError("");
-      const data = await getTasks({ token });
-      if (data) setTasks(data);
+      const data = await api.getTasks(token);
+      setTasks(data.tasks || data); // поддержка разных форматов ответа
     } catch (err) {
       setError(err.message || "Ошибка загрузки задач");
     } finally {
@@ -38,6 +38,10 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+
+
+
 
 
 
