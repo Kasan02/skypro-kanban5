@@ -88,7 +88,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                     placeholder="E-mail"
                     value={formData.email}
                     onChange={handleChange}
-                    hasError={errors.email}
+                    $hasError={errors.email}
                   />
                   {errors.email && (
                     <ErrorMessage>
@@ -104,7 +104,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                     placeholder="Пароль"
                     value={formData.password}
                     onChange={handleChange}
-                    hasError={errors.password}
+                    $hasError={errors.password}
                   />
                   {errors.password && (
                     <ErrorMessage>Пароль должен содержать минимум 5 символов</ErrorMessage>
@@ -120,7 +120,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                 <p>
                   Уже есть аккаунт?{" "}
                   <a href="/sign-in" onClick={(e) => { e.preventDefault(); navigate("/sign-in"); }}>
-                    Войти
+                    Войдите здесь
                   </a>
                 </p>
               </FormGroup>

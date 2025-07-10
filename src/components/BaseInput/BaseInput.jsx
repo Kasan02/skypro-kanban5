@@ -1,4 +1,3 @@
-import React from "react";
 import { StyledInput, StyledTextarea } from "./BaseInput.styled";
 
 const BaseInput = ({
@@ -19,7 +18,7 @@ const BaseInput = ({
       name={name}
       type={type}
       placeholder={placeholder}
-      $error={error}
+      $error={error} // ⬅️ используем $error, чтобы не попадал в DOM
       onChange={onChange}
       value={value}
     />
@@ -27,5 +26,6 @@ const BaseInput = ({
 };
 
 export default BaseInput;
+
 
 

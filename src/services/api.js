@@ -1,91 +1,44 @@
-const KANBAN_BASE_URL = 'https://wedev-api.sky.pro/api/kanban';
-const WORDS_BASE_URL = 'https://wedev-api.sky.pro/api/words';
+const BASE_URL = "https://wedev-api.sky.pro/api/user";
 
-export async function getTasks(token) {
-  const res = await fetch(KANBAN_BASE_URL, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-  return res.json(); // { tasks: [...] }
-}
+export const api = {
+  async register({ login, name, password }) {
+    const response = await fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ login, name, password }),
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Ошибка регистрации");
+    }
+    return response.json();
+  },
 
-export async function getTaskById(id, token) {
-  const res = await fetch(`${KANBAN_BASE_URL}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) {
-    if (res.status === 404) throw new Error('Задача не найдена');
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-  return res.json(); // { task: {...} }
-}
+  async login({ login, password }) {
+    const response = await fetch(BASE_URL + "/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ login, password }),
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Неверный логин или пароль");
+    }
+    return response.json();
+  },
 
-export async function createTask(taskData, token) {
-  const res = await fetch(KANBAN_BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(taskData),
-  });
-  if (!res.ok) {
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-  return res.json(); // { tasks: [...] }
-}
+  async getTasks(token) {
+    const response = await fetch("https://wedev-api.sky.pro/api/kanban", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Ошибка загрузки задач");
+    }
+    return response.json();
+  },
+};
 
-export async function updateTask(id, taskData, token) {
-  const res = await fetch(`${KANBAN_BASE_URL}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(taskData),
-  });
-  if (!res.ok) {
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-  return res.json(); // { tasks: [...] }
-}
-
-export async function deleteTask(id, token) {
-  const res = await fetch(`${KANBAN_BASE_URL}/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-  return res.json(); // { tasks: [...] }
-}
-
-// === Добавляем функцию для загрузки слов ===
-export async function fetchWords({ token }) {
-  if (!token) throw new Error("Токен не передан");
-
-  const res = await fetch(WORDS_BASE_URL, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Ошибка ${res.status}: ${res.statusText}`);
-  }
-
-  const data = await res.json();
-  return data.words || data; // Возвращаем слова
-}
 
 
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   Bg,
   Modal,
@@ -9,11 +10,12 @@ import {
   Title,
   Form,
   InputWrapper,
-  Input,
   BtnEnter,
   FormGroup,
   ErrorMessage,
 } from "./SignInPage.styled";
+
+import BaseInput from "../../components/BaseInput/BaseInput"; // <-- поправь путь при необходимости
 
 const SignInPage = ({ setIsAuth, setUser }) => {
   const navigate = useNavigate();
@@ -53,7 +55,6 @@ const SignInPage = ({ setIsAuth, setUser }) => {
       return;
     }
 
-    // Задаём пользователя — заглушка, можно расширить под реальный логин
     const fakeUser = {
       name: "Даниил",
       email: formData.email,
@@ -73,13 +74,13 @@ const SignInPage = ({ setIsAuth, setUser }) => {
               <Title>Вход</Title>
               <Form onSubmit={handleSubmit} noValidate>
                 <InputWrapper>
-                  <Input
+                  <BaseInput
                     type="email"
                     name="email"
                     placeholder="E-mail"
                     value={formData.email}
                     onChange={handleChange}
-                    hasError={errors.email}
+                    $hasError={errors.email}
                   />
                   {errors.email && (
                     <ErrorMessage>
@@ -89,13 +90,13 @@ const SignInPage = ({ setIsAuth, setUser }) => {
                 </InputWrapper>
 
                 <InputWrapper>
-                  <Input
+                  <BaseInput
                     type="password"
                     name="password"
                     placeholder="Пароль"
                     value={formData.password}
                     onChange={handleChange}
-                    hasError={errors.password}
+                    $hasError={errors.password}
                   />
                   {errors.password && (
                     <ErrorMessage>Пароль должен содержать минимум 5 символов</ErrorMessage>
@@ -109,9 +110,9 @@ const SignInPage = ({ setIsAuth, setUser }) => {
 
               <FormGroup>
                 <p>
-                  Нет аккаунта?{" "}
+                  Нужно зарегистрироваться?
                   <a href="/sign-up" onClick={(e) => { e.preventDefault(); navigate("/sign-up"); }}>
-                    Зарегистрироваться
+                    Регистрируйтесь здесь
                   </a>
                 </p>
               </FormGroup>
@@ -124,6 +125,10 @@ const SignInPage = ({ setIsAuth, setUser }) => {
 };
 
 export default SignInPage;
+
+
+
+
 
 
 

@@ -1,43 +1,29 @@
-import { useState, useEffect } from 'react';
-import Column from '../Column/column';
-import { MainWrapper, Content } from './main.styled';
-
-const mockTasks = [
-  { title: 'Создать дизайн главной страницы', theme: 'orange', date: '2025-07-10', category: 'Web Design', status: 'Backlog' },
-  { title: 'Написать статью про ИИ', theme: 'purple', date: '2025-07-12', category: 'Copywriting', status: 'In Progress' },
-  { title: 'Собрать отчёт по аналитике', theme: 'green', date: '2025-07-15', category: 'Research', status: 'Done' },
-];
+import Column from "../Column/column";
+import { MainWrapper, Content } from "./main.styled";
 
 const columns = [
-  { id: 1, title: 'Бэклог', status: 'Backlog' },
-  { id: 2, title: 'В процессе', status: 'In Progress' },
-  { id: 3, title: 'Готово', status: 'Done' },
+  { id: 1, title: "Бэклог", status: "Backlog" },
+  { id: 2, title: "В процессе", status: "In Progress" },
+  { id: 3, title: "Готово", status: "Done" },
 ];
 
-const Main = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [tasksByStatus, setTasksByStatus] = useState({});
-
-  useEffect(() => {
-    setTimeout(() => {
-      const grouped = columns.reduce((acc, col) => {
-        acc[col.status] = mockTasks.filter(task => task.status === col.status);
-        return acc;
-      }, {});
-      setTasksByStatus(grouped);
-      setIsLoading(false);
-    }, 1000); // симулируем загрузку
-  }, []);
+const Main = ({ tasks = [], loading = false, error = "" }) => {
+  const tasksByStatus = columns.reduce((acc, col) => {
+    acc[col.status] = tasks.filter((task) => task.status === col.status);
+    return acc;
+  }, {});
 
   return (
     <MainWrapper>
+      {error && <p style={{ color: "red", padding: "16px" }}>{error}</p>}
+
       <Content>
         {columns.map((col) => (
           <Column
             key={col.id}
             title={col.title}
             tasks={tasksByStatus[col.status] || []}
-            isLoading={isLoading}
+            isLoading={loading}
           />
         ))}
       </Content>
@@ -46,6 +32,7 @@ const Main = () => {
 };
 
 export default Main;
+
 
 
 

@@ -1,6 +1,12 @@
 import Card from '../Card/card.jsx';
 import { ColumnWrapper, ColumnTitle, CardsWrapper } from './column.styled';
 
+const themeMap = {
+  Research: "green",
+  "Web Design": "orange",
+  Copywriting: "purple",
+};
+
 const Column = ({ title, tasks, isLoading }) => {
   return (
     <ColumnWrapper>
@@ -15,7 +21,7 @@ const Column = ({ title, tasks, isLoading }) => {
               <Card
                 key={index}
                 title={task.title}
-                theme={task.theme}
+                theme={themeMap[task.category] || "green"}
                 date={task.date}
                 category={task.category}
                 loading={false}
@@ -29,6 +35,8 @@ const Column = ({ title, tasks, isLoading }) => {
 };
 
 export default Column;
+
+
 
 
 

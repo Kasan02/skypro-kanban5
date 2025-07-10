@@ -67,6 +67,7 @@ export const InputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
+/* Вот сам Input с поддержкой ошибки через транзиентный проп $hasError */
 export const Input = styled.input`
   width: 100%;
   border-radius: 8px;
@@ -89,8 +90,8 @@ export const Input = styled.input`
     border-color: #565eef;
   }
 
-  ${({ hasError }) =>
-    hasError &&
+  ${({ $hasError }) =>
+    $hasError &&
     css`
       border: 0.7px solid rgb(248, 77, 77);
       box-sizing: border-box;
@@ -150,6 +151,8 @@ export const ErrorMessage = styled.div`
   margin-top: -15px;
   margin-bottom: 10px;
 `;
+
+
 
 
 
