@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   Bg,
   Modal,
@@ -15,11 +16,14 @@ import {
   ErrorMessage,
 } from "../SignInPage/SignInPage.styled";
 
+import { api } from "../../services/api";
+
 const SignUpPage = ({ setIsAuth, setUser }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "", name: "" });
   const [errors, setErrors] = useState({ email: false, password: false, general: "" });
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (email) => {
     if (!email.includes("@")) return false;
@@ -37,11 +41,11 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
     setErrors({ email: false, password: false, general: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let emailError = !validateEmail(formData.email);
-    let passwordError = !validatePassword(formData.password);
+    const emailError = !validateEmail(formData.email);
+    const passwordError = !validatePassword(formData.password);
 
     if (emailError || passwordError) {
       setErrors({
@@ -53,14 +57,40 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
       return;
     }
 
-    const fakeUser = {
-      name: formData.name || "Пользователь",
-      email: formData.email,
-    };
+    setLoading(true);
+    setErrors({ email: false, password: false, general: "" });
 
-    setUser(fakeUser);
-    setIsAuth(true);
-    navigate("/");
+    try {
+      const data = await api.register({
+        login: formData.email,
+        password: formData.password,
+        name: formData.name,
+      });
+
+      // Проверяем наличие токена именно в data.user.token
+      if (!data.user?.token) throw new Error("Токен не получен");
+
+      // Сохраняем токен
+      localStorage.setItem("token", data.user.token);
+
+      // Обновляем состояние пользователя
+      setUser({
+        name: data.user.name || formData.name || "Пользователь",
+        email: formData.email,
+      });
+
+      setIsAuth(true);
+
+      // Навигация на главную страницу
+      navigate("/");
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        general: error.message || "Ошибка регистрации. Попробуйте еще раз.",
+      }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,6 +108,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                     placeholder="Имя"
                     value={formData.name}
                     onChange={handleChange}
+                    disabled={loading}
                   />
                 </InputWrapper>
 
@@ -89,6 +120,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                     value={formData.email}
                     onChange={handleChange}
                     $hasError={errors.email}
+                    disabled={loading}
                   />
                   {errors.email && (
                     <ErrorMessage>
@@ -105,13 +137,16 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                     value={formData.password}
                     onChange={handleChange}
                     $hasError={errors.password}
+                    disabled={loading}
                   />
                   {errors.password && (
                     <ErrorMessage>Пароль должен содержать минимум 5 символов</ErrorMessage>
                   )}
                 </InputWrapper>
 
-                <BtnEnter type="submit">Зарегистрироваться</BtnEnter>
+                <BtnEnter type="submit" disabled={loading}>
+                  {loading ? "Регистрация..." : "Зарегистрироваться"}
+                </BtnEnter>
 
                 {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
               </Form>
@@ -119,7 +154,13 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
               <FormGroup>
                 <p>
                   Уже есть аккаунт?{" "}
-                  <a href="/sign-in" onClick={(e) => { e.preventDefault(); navigate("/sign-in"); }}>
+                  <a
+                    href="/sign-in"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/sign-in");
+                    }}
+                  >
                     Войдите здесь
                   </a>
                 </p>
@@ -133,6 +174,9 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
 };
 
 export default SignUpPage;
+
+
+
 
 
 

@@ -1,91 +1,101 @@
 const BASE_URL = "https://wedev-api.sky.pro/api";
 
-async function request(url, options = {}) {
-  try {
-    const response = await fetch(BASE_URL + url, options);
+async function request(path, options = {}) {
+  const url = BASE_URL + path;
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      data = {};
-    }
+  const headers = options.headers ? { ...options.headers } : {};
 
-    if (!response.ok) {
-      const errorMessage = data.message || data.error || `Ошибка: ${response.status}`;
-      throw new Error(errorMessage);
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  // Важно! Не ставим Content-Type для /user/login и /user (регистрация), так как сервер не принимает его
+  const noContentTypePaths = ["/user/login", "/user"];
+  if (options.body && !headers["Content-Type"] && !noContentTypePaths.includes(path)) {
+    headers["Content-Type"] = "application/json";
   }
+
+  const token = localStorage.getItem("token");
+  if (token && !headers["Authorization"] && !noContentTypePaths.includes(path)) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const config = {
+    ...options,
+    headers,
+  };
+
+  // Преобразуем тело в JSON, если не FormData
+  if (options.body && typeof options.body === "object" && !(options.body instanceof FormData)) {
+    config.body = JSON.stringify(options.body);
+  }
+
+  const response = await fetch(url, config);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Ошибка ${response.status}: ${errorText}`);
+  }
+
+  if (response.status === 204) return null;
+
+  return response.json();
 }
 
 export const api = {
-  async register({ login, name, password }) {
-    return request("/user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, name, password }),
-    });
-  },
-
-  async login({ login, password }) {
+  login: async ({ login, password }) => {
     return request("/user/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, password }),
+      body: { login, password },
+    }).then((data) => {
+      if (data.user?.token) {
+        localStorage.setItem("token", data.user.token);
+      }
+      return data;
     });
   },
 
-  async getTasks(token) {
-    if (!token) throw new Error("Токен не передан");
-
-    return request("/kanban", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  },
-
-  async createTask(token, taskData) {
-    if (!token) throw new Error("Токен не передан");
-
-    return request("/kanban", {
+  register: async ({ login, password, name }) => {
+    return request("/user", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(taskData),
+      body: { login, password, name },
+    }).then((data) => {
+      if (data.user?.token) {
+        localStorage.setItem("token", data.user.token);
+      }
+      return data;
     });
   },
 
-  async updateTask(token, taskId, taskData) {
-    if (!token) throw new Error("Токен не передан");
+  getTasks: () => request("/kanban", { method: "GET" }),
 
-    return request(`/kanban/${taskId}`, {
-      method: "PUT",  // изменено с PATCH на PUT для соответствия документации
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(taskData),
-    });
-  },
+  getTaskById: (id) => request(`/kanban/${id}`, { method: "GET" }),
 
-  async deleteTask(token, taskId) {
-    if (!token) throw new Error("Токен не передан");
+  addTask: (taskData) =>
+    request("/kanban", {
+      method: "POST",
+      body: taskData,
+    }),
 
-    return request(`/kanban/${taskId}`, {
+  updateTask: (id, taskData) =>
+    request(`/kanban/${id}`, {
+      method: "PUT",
+      body: taskData,
+    }),
+
+  deleteTask: (id) =>
+    request(`/kanban/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    }),
+
+  getUsers: () => request("/user", { method: "GET" }),
+
+  logout: () => {
+    localStorage.removeItem("token");
   },
 };
+
+
+
+
+
+
 
 
 

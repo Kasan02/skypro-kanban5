@@ -15,13 +15,15 @@ import {
   ErrorMessage,
 } from "./SignInPage.styled";
 
-import BaseInput from "../../components/BaseInput/BaseInput"; // <-- поправь путь при необходимости
+import BaseInput from "../../components/BaseInput/BaseInput";
+import { api } from "../../services/api";
 
 const SignInPage = ({ setIsAuth, setUser }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false, general: "" });
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (email) => {
     if (!email.includes("@")) return false;
@@ -39,11 +41,11 @@ const SignInPage = ({ setIsAuth, setUser }) => {
     setErrors({ email: false, password: false, general: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let emailError = !validateEmail(formData.email);
-    let passwordError = !validatePassword(formData.password);
+    const emailError = !validateEmail(formData.email);
+    const passwordError = !validatePassword(formData.password);
 
     if (emailError || passwordError) {
       setErrors({
@@ -55,14 +57,32 @@ const SignInPage = ({ setIsAuth, setUser }) => {
       return;
     }
 
-    const fakeUser = {
-      name: "Даниил",
-      email: formData.email,
-    };
+    setLoading(true);
+    setErrors({ email: false, password: false, general: "" });
 
-    setUser(fakeUser);
-    setIsAuth(true);
-    navigate("/");
+    try {
+      const data = await api.login({ login: formData.email, password: formData.password });
+
+      if (!data.user?.token) throw new Error("Токен не получен");
+
+      localStorage.setItem("token", data.user.token);
+
+      setUser({
+        name: data.user.name || "Пользователь",
+        email: formData.email,
+        imageUrl: data.user.imageUrl || "",
+      });
+
+      setIsAuth(true);
+      navigate("/"); // или /main если нужно
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        general: error.message || "Ошибка входа. Попробуйте еще раз.",
+      }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -81,6 +101,7 @@ const SignInPage = ({ setIsAuth, setUser }) => {
                     value={formData.email}
                     onChange={handleChange}
                     $hasError={errors.email}
+                    disabled={loading}
                   />
                   {errors.email && (
                     <ErrorMessage>
@@ -97,21 +118,30 @@ const SignInPage = ({ setIsAuth, setUser }) => {
                     value={formData.password}
                     onChange={handleChange}
                     $hasError={errors.password}
+                    disabled={loading}
                   />
                   {errors.password && (
                     <ErrorMessage>Пароль должен содержать минимум 5 символов</ErrorMessage>
                   )}
                 </InputWrapper>
 
-                <BtnEnter type="submit">Войти</BtnEnter>
+                <BtnEnter type="submit" disabled={loading}>
+                  {loading ? "Вход..." : "Войти"}
+                </BtnEnter>
 
                 {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
               </Form>
 
               <FormGroup>
                 <p>
-                  Нужно зарегистрироваться?
-                  <a href="/sign-up" onClick={(e) => { e.preventDefault(); navigate("/sign-up"); }}>
+                  Нужно зарегистрироваться?{" "}
+                  <a
+                    href="/sign-up"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/sign-up");
+                    }}
+                  >
                     Регистрируйтесь здесь
                   </a>
                 </p>
@@ -125,19 +155,6 @@ const SignInPage = ({ setIsAuth, setUser }) => {
 };
 
 export default SignInPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

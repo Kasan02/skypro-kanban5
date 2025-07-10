@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchTasks } from "../services/kanbanApi";
+import { api } from "../../services/api"; // путь к api.js
 
 const TasksList = () => {
   const [tasks, setTasks] = useState([]);
@@ -11,10 +11,10 @@ const TasksList = () => {
       setLoading(true);
       setError("");
       try {
-        const tasksData = await fetchTasks();
+        const tasksData = await api.getTasks();  // вызываем твой метод getTasks
         setTasks(tasksData);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Неизвестная ошибка");
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ const TasksList = () => {
         <p>Задачи не найдены</p>
       ) : (
         <ul>
-          {tasks.map(task => (
+          {tasks.map((task) => (
             <li key={task._id}>
               <strong>{task.title}</strong> — {task.status}
             </li>
@@ -44,3 +44,4 @@ const TasksList = () => {
 };
 
 export default TasksList;
+
