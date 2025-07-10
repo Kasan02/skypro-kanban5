@@ -1,25 +1,38 @@
-import { useParams } from 'react-router-dom';
-
-const words = [
-  { id: '1', word: 'apple', translation: 'яблоко' },
-  { id: '2', word: 'car', translation: 'машина' },
-];
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 
 const WordPage = () => {
   const { id } = useParams();
+  const [task, setTask] = useState(null);
+  const [error, setError] = useState("");
 
-  const currentWord = words.find(w => w.id === id);
+  useEffect(() => {
+    const loadTask = async () => {
+      try {
+        const data = await api.getTaskById(id);
+        setTask(data.task || data);
+      } catch (err) {
+        console.error(err);
+        setError("Задача не найдена");
+      }
+    };
 
-  if (!currentWord) {
-    return <p>Слово не найдено</p>;
-  }
+    loadTask();
+  }, [id]);
+
+  if (error) return <p>{error}</p>;
+  if (!task) return <p>Загрузка...</p>;
 
   return (
     <div>
-      <h2>Слово: {currentWord.word}</h2>
-      <p>Перевод: {currentWord.translation}</p>
+      <h2>{task.title}</h2>
+      <p>Категория: {task.category}</p>
+      <p>Дата: {task.date}</p>
+      <p>Статус: {task.status}</p>
     </div>
   );
 };
 
 export default WordPage;
+

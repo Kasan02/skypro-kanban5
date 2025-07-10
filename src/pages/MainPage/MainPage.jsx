@@ -1,5 +1,7 @@
+// src/pages/MainPage/MainPage.jsx
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Main from "../../components/Main/Main";
 import Notification from "../../components/Notification/Notification";
 import { api } from "../../services/api";
@@ -11,7 +13,6 @@ const MainPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Используем useCallback для onCloseNotification, чтобы не создавать функцию заново каждый рендер
   const clearError = useCallback(() => setError(""), []);
 
   useEffect(() => {
@@ -44,11 +45,13 @@ const MainPage = () => {
     <>
       <Main tasks={tasks} loading={loading} error={error} />
       <Notification message={error} type="error" onClose={clearError} />
+      <Outlet /> {/* Место для отображения модалки NewWordPage */}
     </>
   );
 };
 
 export default MainPage;
+
 
 
 

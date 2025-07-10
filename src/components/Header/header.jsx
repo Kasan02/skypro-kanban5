@@ -92,9 +92,10 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
           <Nav>
             {isAuth && user ? (
               <>
-                <MainButton id="btnMainNew">
-                  <a href="#popNewCard">Создать новую задачу</a>
+                <MainButton id="btnMainNew" onClick={() => navigate("/new")}>
+                  Создать новую задачу
                 </MainButton>
+
 
                 <UserButtonWrapper>
                   <UserButton onClick={handleUserClick} aria-haspopup="true" aria-expanded={showUserPopup}>
