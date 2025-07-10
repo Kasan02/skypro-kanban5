@@ -1,18 +1,21 @@
-import Header from "./components/Header/header.jsx";
-import Main from "./components/Main/main.jsx";
-import PopBrowse from './components/Popups/popBrowse/popBrowse.jsx';
-import PopNewCard from './components/Popups/popNewCard/popNewCard.jsx';
-import "./App.css"
+import { useState } from "react";
+import AppRoutes from "./AppRoutes";
+import Header from "./components/Header/header"; 
+import "./App.css";
 
 const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
+
   return (
     <>
-      <Header />
-      <Main />
-      <PopBrowse />
-      <PopNewCard />
+      {isAuth && <Header isAuth={isAuth} setIsAuth={setIsAuth} />}
+      <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
     </>
   );
 };
 
 export default App;
+
+
+
+

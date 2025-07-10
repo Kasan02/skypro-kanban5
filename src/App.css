@@ -14,23 +14,23 @@ a:visited {
   text-decoration: none;
   cursor: pointer;
 }
-body.dark {
+/* body.dark {
   background: rgb(32, 32, 44);
   color: #fff;
-}
+} */
 
-body.dark .header {
+/* body.dark .header {
   background: rgb(32, 32, 44);
   color: #fff;
-}
+} */
 
-body.dark .card {
+/* body.dark .card {
   background: rgb(32, 32, 44);
-  color: #fff; /* белый текст */
-  border: 1px solid #444; /* если нужна рамка */
-}
+  color: #fff; 
+  border: 1px solid #444;
+} */
 
-body.dark .card h1,
+/* body.dark .card h1,
 body.dark .card h2,
 body.dark .card h3,
 body.dark .card h4,
@@ -40,12 +40,12 @@ body.dark .card p,
 body.dark .card a,
 body.dark .card span {
   color: #fff;
-}
+} */
 
-body.dark main {
-  background-color: #000; /* самый черный фон */
-  color: #fff; /* белый текст */
-}
+/* body.dark main {
+  background-color: #000; 
+  color: #fff; 
+} */
 
 
 
