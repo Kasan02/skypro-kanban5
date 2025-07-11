@@ -17,10 +17,23 @@ import {
   DropdownItem,
 } from './card.styled';
 
-const formatDate = (isoDate) => {
-  if (!isoDate) return "";
-  const dateObj = new Date(isoDate);
-  return dateObj.toLocaleDateString("ru-RU");
+const categoryMap = {
+  'webdesign': { className: '_orange', label: 'Web Design' },
+  'copywriting': { className: '_purple', label: 'Copywriting' },
+  'research': { className: '_green', label: 'Research' },
+};
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  const parts = dateStr.split('.');
+  if (parts.length !== 3) return dateStr;
+  const day = parts[0];
+  const month = parts[1];
+  let year = parts[2];
+  if (year.length === 2) {
+    year = '20' + year;
+  }
+  return `${day}.${month}.${year}`;
 };
 
 const Card = ({ _id, title, category, date, loading, onEdit }) => {
@@ -28,7 +41,8 @@ const Card = ({ _id, title, category, date, loading, onEdit }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const safeCategory = category ? category.toLowerCase() : 'default';
+  const categoryKey = category ? category.toLowerCase() : 'default';
+  const { className, label } = categoryMap[categoryKey] || { className: '_default', label: category || 'Без категории' };
 
   const handleDelete = async () => {
     try {
@@ -44,7 +58,6 @@ const Card = ({ _id, title, category, date, loading, onEdit }) => {
     setMenuOpen(false);
   };
 
-  // Закрываем меню при клике вне его
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -81,8 +94,8 @@ const Card = ({ _id, title, category, date, loading, onEdit }) => {
       <CardItem>
         <CardContainer>
           <CardGroup>
-            <CardTheme className={`_${safeCategory}`}>
-              <p>{category || 'Без категории'}</p>
+            <CardTheme className={className}>
+              <p>{label}</p>
             </CardTheme>
             <div style={{ position: "relative" }} ref={menuRef}>
               <CardBtn
@@ -116,6 +129,8 @@ const Card = ({ _id, title, category, date, loading, onEdit }) => {
 };
 
 export default Card;
+
+
 
 
 

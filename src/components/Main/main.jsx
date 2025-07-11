@@ -20,7 +20,6 @@ const Main = ({ tasks = [], loading = false, error = "" }) => {
   }, {});
 
   const handleEditTask = (taskId) => {
-    // Здесь укажи актуальный путь редактирования
     navigate(`/edit/${taskId}`);
   };
 
@@ -44,6 +43,7 @@ const Main = ({ tasks = [], loading = false, error = "" }) => {
 };
 
 export default Main;
+
 
 
 
