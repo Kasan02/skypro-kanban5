@@ -5,8 +5,9 @@ const ExitPage = ({ setIsAuth, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    localStorage.removeItem("token");
     setIsAuth(false);
-    setUser(null); 
+    setUser(null);
     navigate("/sign-in");
   }, [setIsAuth, setUser, navigate]);
 
@@ -14,4 +15,5 @@ const ExitPage = ({ setIsAuth, setUser }) => {
 };
 
 export default ExitPage;
+
 
