@@ -1,16 +1,21 @@
 const BASE_URL = "https://wedev-api.sky.pro/api";
 
+// Проверка, нужно ли исключить Content-Type
+function isPathWithoutContentType(path) {
+  const noContentTypePatterns = [
+    /^\/user\/login$/,
+    /^\/user$/,
+    /^\/kanban$/,
+    /^\/kanban\/[^/]+$/, // путь вида /kanban/:id
+  ];
+  return noContentTypePatterns.some((pattern) => pattern.test(path));
+}
+
 async function request(path, options = {}) {
   const url = BASE_URL + path;
   const headers = options.headers ? { ...options.headers } : {};
 
-  const noContentTypePaths = ["/user/login", "/user", "/kanban"];
-
-  if (
-    options.body &&
-    !headers["Content-Type"] &&
-    !noContentTypePaths.includes(path)
-  ) {
+  if (options.body && !headers["Content-Type"] && !isPathWithoutContentType(path)) {
     headers["Content-Type"] = "application/json";
   }
 
@@ -82,6 +87,7 @@ export const api = {
     localStorage.removeItem("token");
   },
 };
+
 
 
 

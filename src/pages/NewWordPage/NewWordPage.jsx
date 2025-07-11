@@ -32,13 +32,19 @@ const NewWordPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    const payload = {
+      title: title.trim() || "Новая задача",
+      text: text.trim() || "",
+      category,
+    };
+
+    if (date) {
+      payload.date = date; // передаём только если есть дата
+    }
+
     try {
-      await api.addTask({
-        title: title.trim() || "Новая задача",
-        text: text.trim() || "",
-        category,
-        date: date || null,
-      });
+      await api.addTask(payload);
       navigate("/", { replace: true });
     } catch (err) {
       console.error("Ошибка при создании задачи:", err);
@@ -101,7 +107,6 @@ const NewWordPage = () => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-              {/* Если есть компонент календаря — можно тут добавить логику открытия, иначе кнопка не нужна */}
               <CalendarButton type="button" aria-label="Открыть календарь" disabled>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -132,6 +137,7 @@ const NewWordPage = () => {
 };
 
 export default NewWordPage;
+
 
 
 
