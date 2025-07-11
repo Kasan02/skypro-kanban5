@@ -23,18 +23,15 @@ const categoryMap = {
   'research': { className: '_green', label: 'Research' },
 };
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return "";
-  const parts = dateStr.split('.');
-  if (parts.length !== 3) return dateStr;
-  const day = parts[0];
-  const month = parts[1];
-  let year = parts[2];
-  if (year.length === 2) {
-    year = '20' + year;
-  }
+const formatDate = (isoString) => {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
   return `${day}.${month}.${year}`;
 };
+
 
 const Card = ({ _id, title, category, date, loading, onEdit }) => {
   const { deleteTask } = useTasks();
