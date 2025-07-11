@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AppRoutes from "./AppRoutes";
 import Header from "./components/Header/header";
+import { TasksProvider } from "./context/TasksContext";
 import "./App.css";
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <TasksProvider>
       {isAuth && user && (
         <Header
           isAuth={isAuth}
@@ -31,11 +32,12 @@ const App = () => {
         setIsAuth={setIsAuth}
         setUser={setUser}
       />
-    </>
+    </TasksProvider>
   );
 };
 
 export default App;
+
 
 
 

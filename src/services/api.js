@@ -59,10 +59,12 @@ export const api = {
 
   getTasks: () => request("/kanban", { method: "GET" }),
 
+  getTaskById: (id) => request(`/kanban/${id}`, { method: "GET" }),
+
   addTask: (taskData) =>
     request("/kanban", {
       method: "POST",
-      body: taskData, 
+      body: taskData,
     }),
 
   updateTask: (id, taskData) =>
@@ -80,6 +82,7 @@ export const api = {
     localStorage.removeItem("token");
   },
 };
+
 
 
 

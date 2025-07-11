@@ -1,3 +1,5 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import Column from "../Column/column";
 import { MainWrapper, Content } from "./main.styled";
 
@@ -10,10 +12,17 @@ const columns = [
 ];
 
 const Main = ({ tasks = [], loading = false, error = "" }) => {
+  const navigate = useNavigate();
+
   const tasksByStatus = columns.reduce((acc, col) => {
     acc[col.status] = tasks.filter((task) => task.status === col.status);
     return acc;
   }, {});
+
+  const handleEditTask = (taskId) => {
+    // Здесь укажи актуальный путь редактирования
+    navigate(`/edit/${taskId}`);
+  };
 
   return (
     <MainWrapper>
@@ -26,6 +35,7 @@ const Main = ({ tasks = [], loading = false, error = "" }) => {
             title={col.title}
             tasks={tasksByStatus[col.status] || []}
             isLoading={loading}
+            onEdit={handleEditTask}
           />
         ))}
       </Content>
@@ -34,6 +44,8 @@ const Main = ({ tasks = [], loading = false, error = "" }) => {
 };
 
 export default Main;
+
+
 
 
 

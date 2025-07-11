@@ -9,6 +9,9 @@ import NewWordPage from "./pages/NewWordPage/NewWordPage";
 import TrainPage from "./pages/TrainPage/TrainPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+// **Добавлен импорт EditWordPage**
+import EditWordPage from "./pages/EditWordPage/EditWordPage";
+
 const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
   return (
     <Routes>
@@ -23,7 +26,7 @@ const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
 
       <Route element={<PrivateRoute isAuth={isAuth} />}>
         <Route path="/" element={<MainPage />}>
-          <Route path="new" element={<NewWordPage />} /> 
+          <Route path="new" element={<NewWordPage />} />
         </Route>
         <Route path="/word/:id" element={<WordPage />} />
         <Route path="/train" element={<TrainPage />} />
@@ -31,6 +34,8 @@ const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
           path="/exit"
           element={<ExitPage setIsAuth={setIsAuth} setUser={setUser} />}
         />
+        {/* Перенёс сюда, чтобы редактирование было защищено */}
+        <Route path="/edit/:id" element={<EditWordPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
@@ -39,6 +44,7 @@ const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
 };
 
 export default AppRoutes;
+
 
 
 

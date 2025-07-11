@@ -1,3 +1,5 @@
+import React, { useState, useRef, useEffect } from "react";
+import { useTasks } from "../../context/TasksContext";
 import {
   CardsWrapper,
   CardItem,
@@ -10,7 +12,9 @@ import {
   CardDate,
   SkeletonCard,
   SkeletonBox,
-  SkeletonDots
+  SkeletonDots,
+  DropdownMenu,
+  DropdownItem,
 } from './card.styled';
 
 const formatDate = (isoDate) => {
@@ -19,7 +23,44 @@ const formatDate = (isoDate) => {
   return dateObj.toLocaleDateString("ru-RU");
 };
 
-const Card = ({ title, category, date, loading }) => {
+const Card = ({ _id, title, category, date, loading, onEdit }) => {
+  const { deleteTask } = useTasks();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  const safeCategory = category ? category.toLowerCase() : 'default';
+
+  const handleDelete = async () => {
+    try {
+      await deleteTask(_id);
+      setMenuOpen(false);
+    } catch (err) {
+      console.error("Ошибка при удалении задачи:", err);
+    }
+  };
+
+  const handleEdit = () => {
+    if (onEdit) onEdit(_id);
+    setMenuOpen(false);
+  };
+
+  // Закрываем меню при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+
   if (loading || !title) {
     return (
       <SkeletonCard>
@@ -35,8 +76,6 @@ const Card = ({ title, category, date, loading }) => {
     );
   }
 
-  const safeCategory = category ? category.toLowerCase() : 'default';
-
   return (
     <CardsWrapper>
       <CardItem>
@@ -45,11 +84,23 @@ const Card = ({ title, category, date, loading }) => {
             <CardTheme className={`_${safeCategory}`}>
               <p>{category || 'Без категории'}</p>
             </CardTheme>
-            <CardBtn>
-              <div />
-              <div />
-              <div />
-            </CardBtn>
+            <div style={{ position: "relative" }} ref={menuRef}>
+              <CardBtn
+                onClick={() => setMenuOpen(!menuOpen)}
+                title="Меню задачи"
+                aria-label="Меню задачи"
+              >
+                <div />
+                <div />
+                <div />
+              </CardBtn>
+              {menuOpen && (
+                <DropdownMenu>
+                  <DropdownItem onClick={handleEdit}>Редактировать</DropdownItem>
+                  <DropdownItem onClick={handleDelete}>Удалить</DropdownItem>
+                </DropdownMenu>
+              )}
+            </div>
           </CardGroup>
           <CardTitle>{title}</CardTitle>
           <CardContent>
@@ -65,6 +116,9 @@ const Card = ({ title, category, date, loading }) => {
 };
 
 export default Card;
+
+
+
 
 
 

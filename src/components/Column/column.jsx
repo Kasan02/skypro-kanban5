@@ -1,3 +1,4 @@
+import React from "react";
 import Card from '../Card/card.jsx';
 import { ColumnWrapper, ColumnTitle, CardsWrapper } from './column.styled';
 
@@ -7,7 +8,7 @@ const themeMap = {
   Copywriting: "purple",
 };
 
-const Column = ({ title, tasks, isLoading }) => {
+const Column = ({ title, tasks, isLoading, onEdit }) => {
   return (
     <ColumnWrapper>
       <ColumnTitle>
@@ -19,12 +20,13 @@ const Column = ({ title, tasks, isLoading }) => {
         ) : tasks.length > 0 ? (
           tasks.map((task, index) => (
             <Card
-              key={task.id !== undefined ? task.id : `task-${index}`} 
+              key={task._id ?? `task-${index}`}
+              _id={task._id}
               title={task.title}
-              theme={themeMap[task.category?.trim()] || "green"}
-              date={task.date}
               category={task.category}
+              date={task.date}
               loading={false}
+              onEdit={onEdit}
             />
           ))
         ) : (
@@ -36,6 +38,8 @@ const Column = ({ title, tasks, isLoading }) => {
 };
 
 export default Column;
+
+
 
 
 

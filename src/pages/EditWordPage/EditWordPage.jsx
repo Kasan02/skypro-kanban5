@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import {
   ModalOverlay,
@@ -18,62 +18,85 @@ import {
   LeftSide,
   RightSide,
   Select,
-} from "./NewWordPage.styled";
+} from "../NewWordPage/NewWordPage.styled";
 
-const NewWordPage = () => {
+const EditWordPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
+  const [word, setWord] = useState("");
+  const [translation, setTranslation] = useState("");
   const [category, setCategory] = useState("Research");
   const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadTask = async () => {
+      try {
+        const data = await api.getTaskById(id);
+        const task = data.task || data;
+
+        setWord(task.title || "");
+        setTranslation(task.description || "");
+        setCategory(task.category || "Research");
+        setDate(task.deadline ? task.deadline.split("T")[0] : ""); // формат для input date yyyy-mm-dd
+      } catch (err) {
+        setError("Ошибка загрузки задачи");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTask();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     try {
-      await api.addTask({
-        title: title.trim() || "Новая задача",
-        text: text.trim() || "",
-        category,
-        date: date || null,
+      await api.updateTask(id, {
+        title: word || "Задача",
+        description: translation || "",
+        category: category || "Research",
+        deadline: date || null,
       });
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("Ошибка при создании задачи:", err);
-      setError("Не удалось создать задачу. Попробуйте ещё раз.");
+      console.error("Ошибка при обновлении задачи:", err);
+      setError("Не удалось обновить задачу");
     }
   };
+
+  if (loading) return <p>Загрузка...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <ModalOverlay>
       <ModalContent>
-        <CloseButton onClick={() => navigate("/", { replace: true })} aria-label="Закрыть">×</CloseButton>
-        <Title>Создание задачи</Title>
+        <CloseButton onClick={() => navigate("/", { replace: true })}>×</CloseButton>
+        <Title>Редактирование задачи</Title>
         <Form onSubmit={handleSubmit}>
           <LeftSide>
             <div>
-              <Label htmlFor="title">Название задачи</Label>
+              <Label htmlFor="word">Название задачи</Label>
               <Input
-                id="title"
+                id="word"
                 type="text"
                 placeholder="Введите название задачи"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={word}
+                onChange={(e) => setWord(e.target.value)}
                 required
-                autoFocus
               />
             </div>
 
             <div>
-              <Label htmlFor="text">Описание задачи</Label>
+              <Label htmlFor="translation">Описание задачи</Label>
               <Textarea
-                id="text"
+                id="translation"
                 placeholder="Введите описание задачи"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                rows={5}
+                value={translation}
+                onChange={(e) => setTranslation(e.target.value)}
               />
             </div>
 
@@ -93,16 +116,15 @@ const NewWordPage = () => {
           </LeftSide>
 
           <RightSide>
-            <DateLabel htmlFor="date">Дата</DateLabel>
+            <DateLabel htmlFor="deadline">Дата</DateLabel>
             <DateInputWrapper>
               <DateInput
-                id="date"
+                id="deadline"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-              {/* Если есть компонент календаря — можно тут добавить логику открытия, иначе кнопка не нужна */}
-              <CalendarButton type="button" aria-label="Открыть календарь" disabled>
+              <CalendarButton type="button" aria-label="Открыть календарь">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -111,8 +133,6 @@ const NewWordPage = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
                 >
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                   <line x1="16" y1="2" x2="16" y2="6" />
@@ -122,8 +142,7 @@ const NewWordPage = () => {
               </CalendarButton>
             </DateInputWrapper>
 
-            <SubmitButton type="submit">Создать задачу</SubmitButton>
-            {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+            <SubmitButton type="submit">Сохранить изменения</SubmitButton>
           </RightSide>
         </Form>
       </ModalContent>
@@ -131,15 +150,4 @@ const NewWordPage = () => {
   );
 };
 
-export default NewWordPage;
-
-
-
-
-
-
-
-
-
-
-
+export default EditWordPage;
