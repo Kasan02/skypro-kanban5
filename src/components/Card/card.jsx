@@ -13,7 +13,14 @@ import {
   SkeletonDots
 } from './card.styled';
 
-const Card = ({ title, theme, date, category, loading }) => {
+// Форматирование даты
+const formatDate = (isoDate) => {
+  if (!isoDate) return "";
+  const dateObj = new Date(isoDate);
+  return dateObj.toLocaleDateString("ru-RU");
+};
+
+const Card = ({ title, category, date, loading }) => {
   if (loading || !title) {
     return (
       <SkeletonCard>
@@ -29,13 +36,16 @@ const Card = ({ title, theme, date, category, loading }) => {
     );
   }
 
+  // Защита от отсутствия категории
+  const safeCategory = category ? category.toLowerCase() : 'default';
+
   return (
     <CardsWrapper>
       <CardItem>
         <CardContainer>
           <CardGroup>
-            <CardTheme className={`_${theme}`}>
-              <p>{category}</p>
+            <CardTheme className={`_${safeCategory}`}>
+              <p>{category || 'Без категории'}</p>
             </CardTheme>
             <CardBtn>
               <div />
@@ -47,7 +57,7 @@ const Card = ({ title, theme, date, category, loading }) => {
           <CardContent>
             <CardDate>
               <img src="/images/calendar-clear-outline.svg" alt="calendar icon" />
-              <p>{date}</p>
+              <p>{formatDate(date)}</p>
             </CardDate>
           </CardContent>
         </CardContainer>
@@ -57,6 +67,9 @@ const Card = ({ title, theme, date, category, loading }) => {
 };
 
 export default Card;
+
+
+
 
 
 

@@ -1,11 +1,16 @@
-// src/pages/NewWordPage/NewWordPage.styled.js
 import styled from "styled-components";
+
+const categoryColors = {
+  Research: "#6BD475",       // зелёный
+  "Web Design": "#FFA500",   // оранжевый
+  Copywriting: "#A259FF",    // фиолетовый
+};
 
 export const ModalOverlay = styled.div`
   box-sizing: border-box;
   border: 0.7px solid rgb(212, 219, 229);
   border-radius: 10px;
-  background: rgb(255, 255, 255);
+  background: #fff;
   position: absolute;
   width: 630px;
   height: 596px;
@@ -15,6 +20,11 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0;
+
+  body.dark & {
+    background: #1e1e1e;
+    border-color: #444;
+  }
 `;
 
 export const ModalContent = styled.div`
@@ -27,6 +37,10 @@ export const ModalContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+
+  body.dark & {
+    background: #2a2a2a;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -38,6 +52,23 @@ export const CloseButton = styled.button`
   font-size: 28px;
   cursor: pointer;
   line-height: 1;
+  color: #000;
+
+  body.dark & {
+    color: #fff;
+  }
+`;
+
+export const Title = styled.h2`
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 23px;
+
+  body.dark & {
+    color: #fff;
+  }
 `;
 
 export const Form = styled.form`
@@ -45,8 +76,7 @@ export const Form = styled.form`
   flex-direction: row;
   height: 100%;
   gap: 30px;
-  position: relative;
-  padding-top: 40px; /* чтобы отступ от заголовка */
+  padding-top: 40px;
 `;
 
 export const LeftSide = styled.div`
@@ -60,29 +90,18 @@ export const RightSide = styled.div`
   display: flex;
   flex-direction: column;
   width: 220px;
-  margin-top: 0;
   gap: 14px;
 `;
 
-export const Title = styled.h2`
-  color: rgb(0, 0, 0);
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 23px;
-  letter-spacing: 0px;
-  text-align: left;
-`;
-
 export const Label = styled.label`
-  color: rgb(0, 0, 0);
+  color: #000;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  line-height: 16px;
-  letter-spacing: 0px;
-  text-align: left;
-  margin: 0;
+
+  body.dark & {
+    color: #fff;
+  }
 `;
 
 export const Input = styled.input`
@@ -91,76 +110,88 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 8px;
   width: 100%;
-  box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 8px;
 
-  ::placeholder{
+  ::placeholder {
     color: rgb(148, 166, 190);
-font-family: Roboto;
-font-size: 14px;
-font-weight: 400;
-line-height: 150%;
-letter-spacing: -1%;
-text-align: left;
+    font-size: 14px;
+  }
+
+  body.dark & {
+    background: #1e1e1e;
+    color: #fff;
+    border-color: #444;
   }
 `;
 
 export const Textarea = styled.textarea`
-  width: 370px;
+  width: 100%;
   height: 200px;
   padding: 10px 14px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   resize: none;
-  box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 8px;
 
-  ::placeholder{
+  ::placeholder {
     color: rgb(148, 166, 190);
-font-family: Roboto;
-font-size: 14px;
-font-weight: 400;
-line-height: 16px;
-letter-spacing: -1%;
-text-align: left;
+    font-size: 14px;
+  }
+
+  body.dark & {
+    background: #1e1e1e;
+    color: #fff;
+    border-color: #444;
   }
 `;
 
-// Добавляем стиль для select
 export const Select = styled.select`
   padding: 10px 14px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   width: 100%;
-  box-sizing: border-box;
+  margin-top: 8px;
   cursor: pointer;
-  margin-top: 14px;
+  background: ${({ value }) => categoryColors[value] || "#fff"};
+  color: #fff;
+  font-weight: 600;
+
+  body.dark & {
+    border-color: #444;
+  }
 `;
 
 export const DateLabel = styled.label`
   font-weight: 600;
   font-size: 14px;
   color: #333;
-  margin: 0;
+
+  body.dark & {
+    color: #fff;
+  }
 `;
 
 export const DateInputWrapper = styled.div`
   position: relative;
   width: 168px;
-  height: 228px;
 `;
 
 export const DateInput = styled.input`
   width: 168px;
-  height: 228px;
+  height: 38px;
   padding: 10px 38px 10px 14px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
-  cursor: pointer;
+
+  body.dark & {
+    background: #1e1e1e;
+    color: #fff;
+    border-color: #444;
+  }
 `;
 
 export const CalendarButton = styled.button`
@@ -179,27 +210,30 @@ export const CalendarButton = styled.button`
   svg {
     width: 20px;
     height: 20px;
-    stroke-width: 2;
+  }
+
+  body.dark & {
+    color: #ccc;
   }
 `;
 
 export const SubmitButton = styled.button`
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  padding: 12px 24px;
-  font-size: 16px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
+  border-radius: 4px;
+  background: rgb(86, 94, 239);
   cursor: pointer;
+  width: 132px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 14px;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
 
   &:hover {
-    background: #45a045;
+    background: rgb(0, 13, 255);
   }
 `;
-
-
-
 

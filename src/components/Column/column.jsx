@@ -21,7 +21,7 @@ const Column = ({ title, tasks, isLoading }) => {
             <Card
               key={task.id !== undefined ? task.id : `task-${index}`} // надежный ключ
               title={task.title}
-              theme={themeMap[task.category] || "green"}
+              theme={themeMap[task.category?.trim()] || "green"}
               date={task.date}
               category={task.category}
               loading={false}

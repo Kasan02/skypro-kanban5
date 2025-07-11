@@ -1,4 +1,3 @@
-// src/pages/MainPage/MainPage.jsx
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -24,14 +23,25 @@ const MainPage = () => {
           return;
         }
 
-        const data = await api.getTasks();
-        if (!data?.tasks || !Array.isArray(data.tasks)) {
+        const response = await api.getTasks();
+        console.log("Ответ от API:", response); // 🔍 Добавим лог
+
+        // Пробуем достать массив задач
+        const tasksArray = Array.isArray(response)
+          ? response
+          : Array.isArray(response?.data)
+          ? response.data
+          : Array.isArray(response?.tasks)
+          ? response.tasks
+          : null;
+
+        if (!tasksArray) {
           throw new Error("Некорректный формат задач");
         }
 
-        setTasks(data.tasks);
+        setTasks(tasksArray);
       } catch (err) {
-        console.error(err);
+        console.error("Ошибка загрузки задач:", err);
         setError("Не удалось загрузить задачи. Попробуйте позже.");
       } finally {
         setLoading(false);
@@ -45,12 +55,14 @@ const MainPage = () => {
     <>
       <Main tasks={tasks} loading={loading} error={error} />
       <Notification message={error} type="error" onClose={clearError} />
-      <Outlet /> {/* Место для отображения модалки NewWordPage */}
+      <Outlet />
     </>
   );
 };
 
 export default MainPage;
+
+
 
 
 

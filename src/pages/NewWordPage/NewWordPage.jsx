@@ -1,4 +1,3 @@
-// src/pages/NewWordPage/NewWordPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
@@ -18,7 +17,7 @@ import {
   SubmitButton,
   LeftSide,
   RightSide,
-  Select, // добавляем Select, его надо определить в styled
+  Select,
 } from "./NewWordPage.styled";
 
 const NewWordPage = () => {
@@ -35,28 +34,26 @@ const NewWordPage = () => {
       await api.addTask({
         title: word || "Новая задача",
         description: translation || "",
-        topic: category || "Research",
+        category: category || "Research",
         deadline: date || null,
       });
       navigate("/", { replace: true });
     } catch (err) {
       console.error("Ошибка при создании задачи:", err);
-      // Можно добавить уведомление об ошибке
     }
   };
 
   return (
     <ModalOverlay>
       <ModalContent>
-        <CloseButton onClick={() => navigate("/", { replace: true })}>
-          ×
-        </CloseButton>
+        <CloseButton onClick={() => navigate("/", { replace: true })}>×</CloseButton>
         <Title>Создание задачи</Title>
         <Form onSubmit={handleSubmit}>
           <LeftSide>
             <div>
-              <Label>Название задачи</Label>
+              <Label htmlFor="word">Название задачи</Label>
               <Input
+                id="word"
                 type="text"
                 placeholder="Введите название задачи"
                 value={word}
@@ -66,8 +63,9 @@ const NewWordPage = () => {
             </div>
 
             <div>
-              <Label>Описание задачи</Label>
+              <Label htmlFor="translation">Описание задачи</Label>
               <Textarea
+                id="translation"
                 placeholder="Введите описание задачи"
                 value={translation}
                 onChange={(e) => setTranslation(e.target.value)}
@@ -75,36 +73,30 @@ const NewWordPage = () => {
             </div>
 
             <div>
-              <Label>Категория</Label>
+              <Label htmlFor="category">Категория</Label>
               <Select
+                id="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
               >
-                <option value="Web Design">Веб-дизайн</option>
                 <option value="Research">Research</option>
+                <option value="Web Design">Web Design</option>
                 <option value="Copywriting">Copywriting</option>
               </Select>
             </div>
           </LeftSide>
 
           <RightSide>
-            <DateLabel>Дата</DateLabel>
+            <DateLabel htmlFor="deadline">Дата</DateLabel>
             <DateInputWrapper>
               <DateInput
+                id="deadline"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-              <CalendarButton
-                type="button"
-                aria-label="Toggle calendar"
-                onClick={() => {
-                  // Тут можно добавить логику открытия кастомного календаря,
-                  // если нужна дополнительная UI-логика
-                  // Сейчас просто стандартный input date, так что можно оставить пустым
-                }}
-              >
+              <CalendarButton type="button" aria-label="Открыть календарь">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -121,9 +113,9 @@ const NewWordPage = () => {
                 </svg>
               </CalendarButton>
             </DateInputWrapper>
-          </RightSide>
 
-          <SubmitButton type="submit">Создать задачу</SubmitButton>
+            <SubmitButton type="submit">Создать задачу</SubmitButton>
+          </RightSide>
         </Form>
       </ModalContent>
     </ModalOverlay>
@@ -131,6 +123,8 @@ const NewWordPage = () => {
 };
 
 export default NewWordPage;
+
+
 
 
 
