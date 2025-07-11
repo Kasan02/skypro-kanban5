@@ -16,15 +16,15 @@ export const NotificationWrapper = styled.div`
   z-index: 1000;
 
   ${({ type }) => type === "error" && css`
-    background-color: #e74c3c; /* красный */
+    background-color: #e74c3c; 
   `}
 
   ${({ type }) => type === "success" && css`
-    background-color: #27ae60; /* зеленый */
+    background-color: #27ae60; 
   `}
 
   ${({ type }) => type === "info" && css`
-    background-color: #3498db; /* синий */
+    background-color: #3498db; 
   `}
 `;
 

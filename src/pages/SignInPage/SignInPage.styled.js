@@ -67,7 +67,6 @@ export const InputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-/* Вот сам Input с поддержкой ошибки через транзиентный проп $hasError */
 export const Input = styled.input`
   width: 100%;
   border-radius: 8px;

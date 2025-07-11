@@ -24,9 +24,8 @@ const MainPage = () => {
         }
 
         const response = await api.getTasks();
-        console.log("Ответ от API:", response); // 🔍 Добавим лог
+        console.log("Ответ от API:", response); 
 
-        // Пробуем достать массив задач
         const tasksArray = Array.isArray(response)
           ? response
           : Array.isArray(response?.data)

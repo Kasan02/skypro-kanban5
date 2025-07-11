@@ -19,7 +19,7 @@ const Column = ({ title, tasks, isLoading }) => {
         ) : tasks.length > 0 ? (
           tasks.map((task, index) => (
             <Card
-              key={task.id !== undefined ? task.id : `task-${index}`} // надежный ключ
+              key={task.id !== undefined ? task.id : `task-${index}`} 
               title={task.title}
               theme={themeMap[task.category?.trim()] || "green"}
               date={task.date}

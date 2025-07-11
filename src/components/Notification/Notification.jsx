@@ -7,7 +7,7 @@ const Notification = ({ message, type = "error", onClose }) => {
 
     const timer = setTimeout(() => {
       onClose();
-    }, 5000); // 5 секунд
+    }, 5000); 
 
     return () => clearTimeout(timer);
   }, [message, onClose]);

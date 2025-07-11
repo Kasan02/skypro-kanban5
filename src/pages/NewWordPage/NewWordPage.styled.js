@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const categoryColors = {
-  Research: "#6BD475",       // зелёный
-  "Web Design": "#FFA500",   // оранжевый
-  Copywriting: "#A259FF",    // фиолетовый
+  Research: "#6BD475",      
+  "Web Design": "#FFA500",   
+  Copywriting: "#A259FF",    
 };
 
 export const ModalOverlay = styled.div`

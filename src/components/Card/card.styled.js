@@ -1,12 +1,10 @@
 import styled, { css, keyframes } from 'styled-components';
 
-// Анимация для карточек
 const cardAnimation = keyframes`
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-// Шиммер для скелетона
 const loadingShimmer = keyframes`
   0% { transform: translateX(0); }
   100% { transform: translateX(150%); }

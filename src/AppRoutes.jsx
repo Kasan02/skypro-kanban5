@@ -1,4 +1,3 @@
-// src/AppRoutes.jsx
 import { Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import SignInPage from "./pages/SignInPage/SignInPage";
@@ -24,7 +23,7 @@ const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
 
       <Route element={<PrivateRoute isAuth={isAuth} />}>
         <Route path="/" element={<MainPage />}>
-          <Route path="new" element={<NewWordPage />} /> {/* 🧩 Модалка */}
+          <Route path="new" element={<NewWordPage />} /> 
         </Route>
         <Route path="/word/:id" element={<WordPage />} />
         <Route path="/train" element={<TrainPage />} />

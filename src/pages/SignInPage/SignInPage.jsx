@@ -74,7 +74,7 @@ const SignInPage = ({ setIsAuth, setUser }) => {
       });
 
       setIsAuth(true);
-      navigate("/"); // или /main если нужно
+      navigate("/"); 
     } catch (error) {
       setErrors((prev) => ({
         ...prev,

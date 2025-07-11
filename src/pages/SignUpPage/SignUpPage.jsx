@@ -67,13 +67,10 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
         name: formData.name,
       });
 
-      // Проверяем наличие токена именно в data.user.token
       if (!data.user?.token) throw new Error("Токен не получен");
 
-      // Сохраняем токен
       localStorage.setItem("token", data.user.token);
 
-      // Обновляем состояние пользователя
       setUser({
         name: data.user.name || formData.name || "Пользователь",
         email: formData.email,
@@ -81,7 +78,6 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
 
       setIsAuth(true);
 
-      // Навигация на главную страницу
       navigate("/");
     } catch (error) {
       setErrors((prev) => ({

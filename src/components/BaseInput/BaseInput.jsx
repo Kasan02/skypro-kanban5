@@ -18,7 +18,7 @@ const BaseInput = ({
       name={name}
       type={type}
       placeholder={placeholder}
-      $error={error} // ⬅️ используем $error, чтобы не попадал в DOM
+      $error={error} 
       onChange={onChange}
       value={value}
     />

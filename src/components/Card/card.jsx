@@ -13,7 +13,6 @@ import {
   SkeletonDots
 } from './card.styled';
 
-// Форматирование даты
 const formatDate = (isoDate) => {
   if (!isoDate) return "";
   const dateObj = new Date(isoDate);
@@ -36,7 +35,6 @@ const Card = ({ title, category, date, loading }) => {
     );
   }
 
-  // Защита от отсутствия категории
   const safeCategory = category ? category.toLowerCase() : 'default';
 
   return (

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 const errorStyle = css`
-  border-color: #ff4d4f; /* красный цвет ошибки */
+  border-color: #ff4d4f; 
 `;
 
 export const StyledInput = styled.input`
@@ -12,24 +12,23 @@ export const StyledInput = styled.input`
   outline: none;
   padding: 10px 8px;
   
-  color: rgb(0, 0, 0); /* черный цвет вводимого текста */
+  color: rgb(0, 0, 0); 
   font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 14px;
-  line-height: 150%; /* 21px по высоте */
-  letter-spacing: -2%; /* -0.28px можно примерно */
+  line-height: 150%; 
+  letter-spacing: -2%; 
   text-align: left;
 
   &::placeholder {
-    color: rgb(0, 0, 0); /* черный цвет плейсхолдера */
-    opacity: 0.6; /* чуть прозрачнее */
+    color: rgb(0, 0, 0); 
+    opacity: 0.6; 
   }
 
   &:focus {
     border-color: #565eef;
   }
 
-  /* Если $error true — подсвечиваем рамку красным */
   ${({ $error }) => $error && errorStyle}
 `;
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api"; // Импортируем твой api.js
+import { api } from "../api"; 
 
 const AuthForm = ({ isSignUp, setIsAuth, setUser }) => {
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ const AuthForm = ({ isSignUp, setIsAuth, setUser }) => {
 
     try {
       if (isSignUp) {
-        // Регистрация
         const data = await api.register({
           login: formData.login,
           password: formData.password,
@@ -36,7 +35,6 @@ const AuthForm = ({ isSignUp, setIsAuth, setUser }) => {
           navigate("/");
         }
       } else {
-        // Вход
         const data = await api.login({
           login: formData.login,
           password: formData.password,

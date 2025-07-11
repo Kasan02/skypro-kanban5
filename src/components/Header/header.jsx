@@ -19,7 +19,6 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
   const popupRef = useRef(null);
   const navigate = useNavigate();
 
-  // Загружаем тему из localStorage при монтировании
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
@@ -27,7 +26,6 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
     }
   }, []);
 
-  // Обновляем класс на body и localStorage при смене темы
   useEffect(() => {
     const body = document.body;
     if (isDarkTheme) {
@@ -39,13 +37,10 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
     }
   }, [isDarkTheme]);
 
-  // Переключение темы
   const toggleTheme = () => setIsDarkTheme((prev) => !prev);
 
-  // Открыть/закрыть попап пользователя
   const handleUserClick = () => setShowUserPopup((prev) => !prev);
 
-  // Закрыть попап при клике вне его области
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -56,7 +51,6 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Выход — очистка авторизации и пользовательских данных, редирект на вход
   const handleLogout = (e) => {
     e.preventDefault();
     setIsAuth(false);
@@ -65,12 +59,10 @@ const Header = ({ isAuth, setIsAuth, user, setUser }) => {
     navigate("/sign-in");
   };
 
-  // Переход на страницу входа
   const handleLogin = () => {
     navigate("/sign-in");
   };
 
-  // Клик по логотипу — переход на главную
   const handleLogoClick = (e) => {
     e.preventDefault();
     navigate("/");
