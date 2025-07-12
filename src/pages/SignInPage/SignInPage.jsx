@@ -1,32 +1,88 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import BaseInput from "../../components/BaseInput/BaseInput";
-import { StyledInput } from "../../components/BaseInput/BaseInput.styled";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Bg,
   Modal,
+  ContainerSignin,
+  ModalBlock,
   Wrapper,
   Title,
   Form,
   InputWrapper,
-  ModalBlock,
   BtnEnter,
   FormGroup,
-  ContainerSignin,
+  ErrorMessage,
 } from "./SignInPage.styled";
 
-const SignInPage = ({ isSignUp, setIsAuth }) => {
+import BaseInput from "../../components/BaseInput/BaseInput";
+import { api } from "../../services/api";
+
+const SignInPage = ({ setIsAuth, setUser }) => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: false, password: false, general: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const validateEmail = (email) => {
+    if (!email.includes("@")) return false;
+    if (!(email.endsWith("gmail.com") || email.endsWith("ru.ru"))) return false;
+    return true;
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 5;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors({ email: false, password: false, general: "" });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsAuth(true);
-    navigate("/");
+
+    const emailError = !validateEmail(formData.email);
+    const passwordError = !validatePassword(formData.password);
+
+    if (emailError || passwordError) {
+      setErrors({
+        email: emailError,
+        password: passwordError,
+        general:
+          "Введенные вами данные некорректны. Чтобы завершить вход, заполните все поля корректно и повторите попытку.",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setErrors({ email: false, password: false, general: "" });
+
+    try {
+      const data = await api.login({ login: formData.email, password: formData.password });
+
+      if (!data.user?.token) throw new Error("Токен не получен");
+
+      localStorage.setItem("token", data.user.token);
+
+      setUser({
+        name: data.user.name || "Пользователь",
+        email: formData.email,
+        imageUrl: data.user.imageUrl || "",
+      });
+
+      setIsAuth(true);
+      navigate("/"); 
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        general: error.message || "Ошибка входа. Попробуйте еще раз.",
+      }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,60 +91,61 @@ const SignInPage = ({ isSignUp, setIsAuth }) => {
         <ContainerSignin>
           <ModalBlock>
             <Wrapper>
-              <Title>{isSignUp ? "Регистрация" : "Вход"}</Title>
-              <Form onSubmit={handleSubmit}>
+              <Title>Вход</Title>
+              <Form onSubmit={handleSubmit} noValidate>
                 <InputWrapper>
-                  {isSignUp && (
-                    <BaseInput
-                      tag="input"
-                      className="auth-input"
-                      type="text"
-                      name="name"
-                      placeholder="Имя"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      as={StyledInput}
-                    />
-                  )}
                   <BaseInput
-                    tag="input"
-                    className="auth-input"
-                    type="text"
-                    name="login"
-                    placeholder="Эл. почта"
-                    value={login}
-                    onChange={(e) => setLogin(e.target.value)}
-                    as={StyledInput}
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    value={formData.email}
+                    onChange={handleChange}
+                    $hasError={errors.email}
+                    disabled={loading}
                   />
+                  {errors.email && (
+                    <ErrorMessage>
+                      Введите корректный e-mail (содержит @ и домен gmail.com или ru.ru)
+                    </ErrorMessage>
+                  )}
+                </InputWrapper>
+
+                <InputWrapper>
                   <BaseInput
-                    tag="input"
-                    className="auth-input"
                     type="password"
                     name="password"
                     placeholder="Пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    as={StyledInput}
+                    value={formData.password}
+                    onChange={handleChange}
+                    $hasError={errors.password}
+                    disabled={loading}
                   />
+                  {errors.password && (
+                    <ErrorMessage>Пароль должен содержать минимум 5 символов</ErrorMessage>
+                  )}
                 </InputWrapper>
 
-                <BtnEnter type="submit">
-                  {isSignUp ? "Зарегистрироваться" : "Войти"}
+                <BtnEnter type="submit" disabled={loading}>
+                  {loading ? "Вход..." : "Войти"}
                 </BtnEnter>
 
-                <FormGroup>
-                  {isSignUp ? (
-                    <p>
-                      Есть аккаунт? <Link to="/sign-in">Войдите здесь</Link>
-                    </p>
-                  ) : (
-                    <>
-                      <p>Нужно зарегистрироваться?</p>
-                      <Link to="/sign-up">Регистрируйтесь здесь</Link>
-                    </>
-                  )}
-                </FormGroup>
+                {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
               </Form>
+
+              <FormGroup>
+                <p>
+                  Нужно зарегистрироваться?{" "}
+                  <a
+                    href="/sign-up"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/sign-up");
+                    }}
+                  >
+                    Регистрируйтесь здесь
+                  </a>
+                </p>
+              </FormGroup>
             </Wrapper>
           </ModalBlock>
         </ContainerSignin>
@@ -98,11 +155,6 @@ const SignInPage = ({ isSignUp, setIsAuth }) => {
 };
 
 export default SignInPage;
-
-
-
-
-
 
 
 

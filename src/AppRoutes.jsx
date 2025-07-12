@@ -5,18 +5,32 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ExitPage from "./pages/ExitPage/ExitPage";
 import MainPage from "./pages/MainPage/MainPage";
 import WordPage from "./pages/WordPage/WordPage";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
+import NewWordPage from "./pages/NewWordPage/NewWordPage";
+import TrainPage from "./pages/TrainPage/TrainPage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
-const AppRoutes = ({ isAuth, setIsAuth }) => {
+const AppRoutes = ({ isAuth, setIsAuth, setUser }) => {
   return (
     <Routes>
-      <Route path="/sign-in" element={<SignInPage setIsAuth={setIsAuth} />} />
-      <Route path="/sign-up" element={<SignUpPage isSignUp setIsAuth={setIsAuth} />} />
+      <Route
+        path="/sign-in"
+        element={<SignInPage setIsAuth={setIsAuth} setUser={setUser} />}
+      />
+      <Route
+        path="/sign-up"
+        element={<SignUpPage setIsAuth={setIsAuth} setUser={setUser} />}
+      />
 
       <Route element={<PrivateRoute isAuth={isAuth} />}>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<MainPage />}>
+          <Route path="new" element={<NewWordPage />} /> 
+        </Route>
         <Route path="/word/:id" element={<WordPage />} />
-        <Route path="/exit" element={<ExitPage setIsAuth={setIsAuth} />} />
+        <Route path="/train" element={<TrainPage />} />
+        <Route
+          path="/exit"
+          element={<ExitPage setIsAuth={setIsAuth} setUser={setUser} />}
+        />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
@@ -25,6 +39,12 @@ const AppRoutes = ({ isAuth, setIsAuth }) => {
 };
 
 export default AppRoutes;
+
+
+
+
+
+
 
 
 

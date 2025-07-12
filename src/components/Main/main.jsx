@@ -1,68 +1,31 @@
-import { useEffect, useState } from 'react';
-import { cards } from '../../data.js';
-import Column from '../Column/column.jsx';
+import Column from "../Column/column";
+import { MainWrapper, Content } from "./main.styled";
 
-import { MainWrapper, Content } from './main.styled.js';
+const columns = [
+  { id: 1, title: "Без статуса", status: "Без статуса" },
+  { id: 2, title: "Нужно сделать", status: "Нужно сделать" },
+  { id: 3, title: "В работе", status: "В работе" },
+  { id: 4, title: "Тестирование", status: "Тестирование" },
+  { id: 5, title: "Готово", status: "Готово" },
+];
 
-const getThemeColor = (category) => {
-  switch (category.toLowerCase()) {
-    case 'web disign':
-      return 'orange';
-    case 'research':
-      return 'green';
-    case 'copywritting':
-    case 'copywriting':
-      return 'purple';
-    default:
-      return 'gray';
-  }
-};
-
-const Main = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const statuses = [...new Set(cards.map(card => card.status))];
-
-  const columns = statuses.map(status => {
-    const tasks = cards
-      .filter(card => card.status === status)
-      .map(card => ({
-        theme: getThemeColor(card.topic || card.theme || ''),
-        category: card.topic || card.theme || '',
-        title: card.title,
-        date: card.date
-      }));
-
-    return {
-      title: status,
-      tasks
-    };
-  });
-
-  const skeletonTask = {
-    theme: 'gray',
-    category: '',
-    title: '',
-    date: ''
-  };
+const Main = ({ tasks = [], loading = false, error = "" }) => {
+  const tasksByStatus = columns.reduce((acc, col) => {
+    acc[col.status] = tasks.filter((task) => task.status === col.status);
+    return acc;
+  }, {});
 
   return (
     <MainWrapper>
+      {error && <p style={{ color: "red", padding: "16px" }}>{error}</p>}
+
       <Content>
-        {columns.map((column, index) => (
+        {columns.map((col) => (
           <Column
-            key={index}
-            title={column.title}
-            tasks={isLoading ? Array(3).fill(skeletonTask) : column.tasks}
-            isLoading={isLoading}
+            key={col.id}
+            title={col.title}
+            tasks={tasksByStatus[col.status] || []}
+            isLoading={loading}
           />
         ))}
       </Content>
@@ -71,6 +34,12 @@ const Main = () => {
 };
 
 export default Main;
+
+
+
+
+
+
 
 
 

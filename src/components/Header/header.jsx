@@ -10,10 +10,10 @@ import {
   UserButton,
   Popup,
   UserButtonWrapper,
-  ThemeLabel
+  ThemeLabel,
 } from "./header.styled";
 
-const Header = ({ isAuth, setIsAuth }) => {
+const Header = ({ isAuth, setIsAuth, user, setUser }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const popupRef = useRef(null);
@@ -54,6 +54,8 @@ const Header = ({ isAuth, setIsAuth }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     setIsAuth(false);
+    setUser(null);
+    setShowUserPopup(false);
     navigate("/sign-in");
   };
 
@@ -61,12 +63,17 @@ const Header = ({ isAuth, setIsAuth }) => {
     navigate("/sign-in");
   };
 
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <HeaderWrapper $mode={isDarkTheme ? "dark" : "light"}>
       <Container>
         <HeaderBlock>
           <Logo>
-            <a href="/" target="_self" rel="noopener noreferrer">
+            <a href="/" onClick={handleLogoClick} rel="noopener noreferrer">
               <img
                 src={isDarkTheme ? "images/logo_dark.png" : "images/logo.png"}
                 alt="logo"
@@ -75,21 +82,22 @@ const Header = ({ isAuth, setIsAuth }) => {
           </Logo>
 
           <Nav>
-            {isAuth ? (
+            {isAuth && user ? (
               <>
-                <MainButton id="btnMainNew">
-                  <a href="#popNewCard">Создать новую задачу</a>
+                <MainButton id="btnMainNew" onClick={() => navigate("/new")}>
+                  Создать новую задачу
                 </MainButton>
 
+
                 <UserButtonWrapper>
-                  <UserButton onClick={handleUserClick}>
-                    Ivan Ivanov {showUserPopup ? "▲" : "▼"}
+                  <UserButton onClick={handleUserClick} aria-haspopup="true" aria-expanded={showUserPopup}>
+                    {user.name} {showUserPopup ? "▲" : "▼"}
                   </UserButton>
 
                   {showUserPopup && (
                     <Popup ref={popupRef} $mode={isDarkTheme ? "dark" : "light"}>
-                      <p>Ivan Ivanov</p>
-                      <p>ivan.ivanov@gmail.com</p>
+                      <p>{user.name}</p>
+                      <p>{user.email}</p>
 
                       <div className="pop-user-set__theme">
                         <ThemeLabel $mode={isDarkTheme ? "dark" : "light"}>
@@ -99,6 +107,7 @@ const Header = ({ isAuth, setIsAuth }) => {
                           type="checkbox"
                           checked={isDarkTheme}
                           onChange={toggleTheme}
+                          aria-label="Переключить темную тему"
                         />
                       </div>
 
@@ -120,6 +129,9 @@ const Header = ({ isAuth, setIsAuth }) => {
 };
 
 export default Header;
+
+
+
 
 
 

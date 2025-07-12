@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const errorStyle = css`
+  border-color: #ff4d4f; 
+`;
 
 export const StyledInput = styled.input`
   width: 100%;
@@ -7,18 +11,55 @@ export const StyledInput = styled.input`
   border: 0.7px solid rgba(148, 166, 190, 0.4);
   outline: none;
   padding: 10px 8px;
-  color: #ffffff;
-  font-family: "Roboto", sans-serif;
+  
+  color: rgb(0, 0, 0); 
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.28px;
+  line-height: 150%; 
+  letter-spacing: -2%; 
+  text-align: left;
 
   &::placeholder {
-    color: #94a6be;
+    color: rgb(0, 0, 0); 
+    opacity: 0.6; 
   }
 
   &:focus {
     border-color: #565eef;
   }
+
+  ${({ $error }) => $error && errorStyle}
 `;
+
+export const StyledTextarea = styled.textarea`
+  width: 100%;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  outline: none;
+  padding: 10px 8px;
+
+  color: rgb(0, 0, 0);
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: -2%;
+  text-align: left;
+
+  &::placeholder {
+    color: rgb(0, 0, 0);
+    opacity: 0.6;
+  }
+
+  &:focus {
+    border-color: #565eef;
+  }
+
+  ${({ $error }) => $error && errorStyle}
+`;
+
+
+
+
