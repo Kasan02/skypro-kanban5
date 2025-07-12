@@ -17,18 +17,18 @@ import {
 
 import BaseInput from "../../components/BaseInput/BaseInput";
 import { api } from "../../services/api";
+import { useAuth } from "../../context/AuthContext"; // добавлено
 
-const SignInPage = ({ setIsAuth, setUser }) => {
+const SignInPage = () => {
   const navigate = useNavigate();
+  const { setIsAuth, setUser } = useAuth(); // заменяем пропсы
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false, general: "" });
   const [loading, setLoading] = useState(false);
 
   const validateEmail = (email) => {
-    if (!email.includes("@")) return false;
-    if (!(email.endsWith("gmail.com") || email.endsWith("ru.ru"))) return false;
-    return true;
+    return email.includes("@") && (email.endsWith("gmail.com") || email.endsWith("ru.ru"));
   };
 
   const validatePassword = (password) => {
@@ -74,7 +74,7 @@ const SignInPage = ({ setIsAuth, setUser }) => {
       });
 
       setIsAuth(true);
-      navigate("/"); 
+      navigate("/"); // или "/main", если используешь защищённый роутинг
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
@@ -155,6 +155,7 @@ const SignInPage = ({ setIsAuth, setUser }) => {
 };
 
 export default SignInPage;
+
 
 
 

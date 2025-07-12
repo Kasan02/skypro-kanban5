@@ -1,19 +1,12 @@
-import { useState, useEffect } from "react";
 import AppRoutes from "./AppRoutes";
 import Header from "./components/Header/header";
+import { TasksProvider } from "./context/TasksContext";
+import { AuthProvider, useAuth } from "./context/AuthContext"; // добавлено
 import "./App.css";
 
-const App = () => {
-  const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("userInfo");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setIsAuth(true);
-    }
-  }, []);
+// Обёртка, чтобы получить данные из AuthContext
+const AppContent = () => {
+  const { isAuth, setIsAuth, user, setUser } = useAuth();
 
   return (
     <>
@@ -35,7 +28,19 @@ const App = () => {
   );
 };
 
+const App = () => {
+  return (
+    <AuthProvider>
+      <TasksProvider>
+        <AppContent />
+      </TasksProvider>
+    </AuthProvider>
+  );
+};
+
 export default App;
+
+
 
 
 

@@ -9,23 +9,27 @@ const BaseInput = ({
   error = false,
   onChange,
   value,
+  disabled,
 }) => {
   const Component = tag === "textarea" ? StyledTextarea : StyledInput;
 
   return (
     <Component
+      as={Component}
       id={id}
       name={name}
       type={type}
       placeholder={placeholder}
-      $error={error} 
+      $hasError={error}
       onChange={onChange}
       value={value}
+      disabled={disabled}
     />
   );
 };
 
 export default BaseInput;
+
 
 
 

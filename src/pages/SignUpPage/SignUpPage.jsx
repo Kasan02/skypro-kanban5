@@ -10,12 +10,12 @@ import {
   Title,
   Form,
   InputWrapper,
-  Input,
   BtnEnter,
   FormGroup,
   ErrorMessage,
 } from "../SignInPage/SignInPage.styled";
 
+import BaseInput from "../../components/BaseInput/BaseInput";
 import { api } from "../../services/api";
 
 const SignUpPage = ({ setIsAuth, setUser }) => {
@@ -74,10 +74,10 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
       setUser({
         name: data.user.name || formData.name || "Пользователь",
         email: formData.email,
+        imageUrl: data.user.imageUrl || "",
       });
 
       setIsAuth(true);
-
       navigate("/");
     } catch (error) {
       setErrors((prev) => ({
@@ -98,7 +98,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
               <Title>Регистрация</Title>
               <Form onSubmit={handleSubmit} noValidate>
                 <InputWrapper>
-                  <Input
+                  <BaseInput
                     type="text"
                     name="name"
                     placeholder="Имя"
@@ -109,7 +109,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                 </InputWrapper>
 
                 <InputWrapper>
-                  <Input
+                  <BaseInput
                     type="email"
                     name="email"
                     placeholder="E-mail"
@@ -126,7 +126,7 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
                 </InputWrapper>
 
                 <InputWrapper>
-                  <Input
+                  <BaseInput
                     type="password"
                     name="password"
                     placeholder="Пароль"
@@ -170,6 +170,8 @@ const SignUpPage = ({ setIsAuth, setUser }) => {
 };
 
 export default SignUpPage;
+
+
 
 
 

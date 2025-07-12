@@ -2,6 +2,12 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 
+const formatDate = (isoDate) => {
+  if (!isoDate) return "Без даты";
+  const date = new Date(isoDate);
+  return date.toLocaleDateString("ru-RU");
+};
+
 const WordPage = () => {
   const { id } = useParams();
   const [task, setTask] = useState(null);
@@ -11,28 +17,36 @@ const WordPage = () => {
     const loadTask = async () => {
       try {
         const data = await api.getTaskById(id);
-        setTask(data.task || data);
+        if (!data || (!data.task && !data.title)) {
+          setError("Задача не найдена");
+        } else {
+          setTask(data.task || data);
+        }
       } catch (err) {
         console.error(err);
-        setError("Задача не найдена");
+        setError("Ошибка при загрузке задачи");
       }
     };
 
     loadTask();
   }, [id]);
 
-  if (error) return <p>{error}</p>;
-  if (!task) return <p>Загрузка...</p>;
+  if (error) return <p style={{ padding: "20px", color: "red" }}>{error}</p>;
+  if (!task) return <p style={{ padding: "20px" }}>Загрузка...</p>;
 
   return (
-    <div>
-      <h2>{task.title}</h2>
-      <p>Категория: {task.category}</p>
-      <p>Дата: {task.date}</p>
-      <p>Статус: {task.status}</p>
+    <div style={{ padding: "20px" }}>
+      <h2>{task.title || "Без названия"}</h2>
+      <p><strong>Категория:</strong> {task.category || "Не указана"}</p>
+      <p><strong>Дата:</strong> {formatDate(task.date)}</p>
+      <p><strong>Статус:</strong> {task.status || "неизвестно"}</p>
+      <p><strong>Описание:</strong> {task.text || "Описание отсутствует"}</p>
     </div>
   );
 };
 
 export default WordPage;
+
+
+
 

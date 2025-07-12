@@ -19,6 +19,7 @@ export const CardsWrapper = styled.div`
 export const CardItem = styled.div`
   padding: 5px;
   animation: ${cardAnimation} 500ms linear;
+  position: relative; /* важно для позиционирования DropdownMenu */
 `;
 
 export const CardContainer = styled.div`
@@ -87,12 +88,57 @@ export const CardBtn = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 
   div {
     width: 4px;
     height: 4px;
     border-radius: 50%;
     background-color: #94A6BE;
+  }
+
+  &:hover div {
+    background-color: #555;
+  }
+`;
+
+export const DropdownMenu = styled.div`
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background: ${({ theme }) => theme?.colors?.background || '#fff'};
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  z-index: 10;
+  min-width: 140px;
+  user-select: none;
+
+  body.dark & {
+    background: #222;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  }
+`;
+
+export const DropdownItem = styled.button`
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  font-size: 14px;
+  color: ${({ theme }) => theme?.colors?.text || '#333'};
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme?.colors?.primary || '#f0f0f0'};
+    color: #000;
+  }
+
+  body.dark &:hover {
+    background-color: #444;
+    color: #fff;
   }
 `;
 
@@ -192,4 +238,6 @@ export const SkeletonDots = styled.div`
     }
   }
 `;
+
+
 
