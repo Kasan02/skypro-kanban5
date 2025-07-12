@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Calendar from "../../components/Calendar/calendar.jsx";
 import { api } from "../../services/api";
 import {
   ModalOverlay,
@@ -8,25 +7,18 @@ import {
   CloseButton,
   Title,
   Form,
-  LeftSide,
-  RightSide,
-  FieldBlock,
   Label,
   Input,
   Textarea,
-  Categories,
-  CategoryThemes,
-  CategoryTheme,
-  CalendarWrapper,
+  DateLabel,
+  DateInputWrapper,
+  DateInput,
+  CalendarButton,
   SubmitButton,
-  ErrorText
+  LeftSide,
+  RightSide,
+  Select,
 } from "./NewWordPage.styled";
-
-const categories = [
-  { key: 'Web Design', colorClass: '_orange' },
-  { key: 'Research', colorClass: '_green' },
-  { key: 'Copywriting', colorClass: '_purple' }
-];
 
 const NewWordPage = () => {
   const navigate = useNavigate();
@@ -41,23 +33,21 @@ const NewWordPage = () => {
     e.preventDefault();
     setError("");
 
-    if (!title.trim()) {
-      setError("Введите название задачи");
-      return;
-    }
-
     const payload = {
-      title: title.trim(),
-      text: text.trim(),
+      title: title.trim() || "Новая задача",
+      text: text.trim() || "",
       category,
     };
-    if (date) payload.date = date;
+
+    if (date) {
+      payload.date = date; // передаём только если есть дата
+    }
 
     try {
       await api.addTask(payload);
       navigate("/", { replace: true });
     } catch (err) {
-      console.error(err);
+      console.error("Ошибка при создании задачи:", err);
       setError("Не удалось создать задачу. Попробуйте ещё раз.");
     }
   };
@@ -65,54 +55,80 @@ const NewWordPage = () => {
   return (
     <ModalOverlay>
       <ModalContent>
-        <CloseButton onClick={() => navigate('/', { replace: true })}>&times;</CloseButton>
+        <CloseButton onClick={() => navigate("/", { replace: true })} aria-label="Закрыть">×</CloseButton>
         <Title>Создание задачи</Title>
         <Form onSubmit={handleSubmit}>
           <LeftSide>
-            <FieldBlock>
+            <div>
               <Label htmlFor="title">Название задачи</Label>
               <Input
                 id="title"
+                type="text"
+                placeholder="Введите название задачи"
                 value={title}
-                placeholder="Введите название задачи..."
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
+                required
                 autoFocus
               />
-            </FieldBlock>
-            <FieldBlock>
-              <Label htmlFor="description">Описание задачи</Label>
+            </div>
+
+            <div>
+              <Label htmlFor="text">Описание задачи</Label>
               <Textarea
-                id="description"
+                id="text"
+                placeholder="Введите описание задачи"
                 value={text}
-                placeholder="Введите описание задачи..."
-                onChange={e => setText(e.target.value)}
+                onChange={(e) => setText(e.target.value)}
                 rows={5}
               />
-            </FieldBlock>
-            <Categories>
-              <Label>Категория</Label>
-              <CategoryThemes>
-                {categories.map(cat => (
-                  <CategoryTheme
-                    key={cat.key}
-                    className={`${cat.colorClass} ${category === cat.key ? '_active-category' : ''}`}
-                    onClick={() => setCategory(cat.key)}
-                  >
-                    {cat.key}
-                  </CategoryTheme>
-                ))}
-              </CategoryThemes>
-            </Categories>
+            </div>
+
+            <div>
+              <Label htmlFor="category">Категория</Label>
+              <Select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <option value="Research">Research</option>
+                <option value="Web Design">Web Design</option>
+                <option value="Copywriting">Copywriting</option>
+              </Select>
+            </div>
           </LeftSide>
+
           <RightSide>
-            <FieldBlock>
-              <Label>Срок исполнения</Label>
-              <CalendarWrapper>
-                <Calendar onSelect={setDate} selectedDate={date} />
-              </CalendarWrapper>
-            </FieldBlock>
+            <DateLabel htmlFor="date">Дата</DateLabel>
+            <DateInputWrapper>
+              <DateInput
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <CalendarButton type="button" aria-label="Открыть календарь" disabled>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </CalendarButton>
+            </DateInputWrapper>
+
             <SubmitButton type="submit">Создать задачу</SubmitButton>
-            {error && <ErrorText>{error}</ErrorText>}
+            {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
           </RightSide>
         </Form>
       </ModalContent>
