@@ -17,7 +17,7 @@ import {
 
 import BaseInput from "../../components/BaseInput/BaseInput";
 import { api } from "../../services/api";
-import { useAuth } from "../../context/AuthContext"; // добавлено
+import { useAuth } from "../../context/AuthContext"; 
 
 const SignInPage = () => {
   const navigate = useNavigate();

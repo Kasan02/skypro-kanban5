@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { useTasks } from "../../context/TasksContext";
 
 const formatDate = (isoDate) => {
   if (!isoDate) return "Без даты";
@@ -10,8 +11,10 @@ const formatDate = (isoDate) => {
 
 const WordPage = () => {
   const { id } = useParams();
+  const { tasks, setTasks } = useTasks();
   const [task, setTask] = useState(null);
   const [error, setError] = useState("");
+
 
   useEffect(() => {
     const loadTask = async () => {
