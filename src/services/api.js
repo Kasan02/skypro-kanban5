@@ -66,11 +66,11 @@ export const api = {
 
   getTaskById: (id) => request(`/kanban/${id}`, { method: "GET" }),
 
-  addTask: (taskData) =>
-    request("/kanban", {
-      method: "POST",
-      body: taskData,
-    }),
+  // addTask: (taskData) =>
+  //   request("/kanban", {
+  //     method: "POST",
+  //     body: taskData,
+  //   }),
 
   updateTask: (id, taskData) =>
     request(`/kanban/${id}`, {
@@ -87,6 +87,23 @@ export const api = {
     localStorage.removeItem("token");
   },
 };
+const addTask = async ({task, token}) => {
+  const response = await fetch(`${BASE_URL}/kanban`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(task),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Ошибка при добавлении задачи: ${errorText}`);
+  }
+
+  return response.json();
+}
+
 
 
 

@@ -10,14 +10,9 @@ import {
   Label,
   Input,
   Textarea,
-  DateLabel,
-  DateInputWrapper,
-  DateInput,
-  CalendarButton,
   SubmitButton,
   LeftSide,
   RightSide,
-  Select,
 } from "../NewWordPage/NewWordPage.styled";
 
 const EditWordPage = () => {
