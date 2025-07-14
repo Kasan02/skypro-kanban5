@@ -2,6 +2,8 @@ import { useState } from "react";
 import Calendar from "../../Calendar/calendar.jsx";
 import { useTasks } from "../../../context/TasksContext";
 import { useAuth } from "../../../context/AuthContext";
+import CategorySelector from "../../CategorySelector/CategorySelector";
+import { Link } from "react-router-dom";
 
 const PopNewCard = () => {
   const { addTask } = useTasks();
@@ -71,17 +73,7 @@ const PopNewCard = () => {
         <div className="pop-new-card__block">
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
-            <a
-              href="#"
-              className="pop-new-card__close"
-              onClick={(e) => {
-                e.preventDefault();
-                const modal = document.getElementById("popNewCard");
-                if (modal) modal.style.display = "none";
-              }}
-            >
-              &#10006;
-            </a>
+            <Link to ="/" className="pop-new-card__close _hover01" />
 
             <div className="pop-new-card__wrap">
               <form className="pop-new-card__form form-new" onSubmit={createTask}>
@@ -122,32 +114,14 @@ const PopNewCard = () => {
             <div className="pop-new-card__categories categories">
               <p className="categories__p subttl">Категория</p>
               <div className="categories__themes">
-                {["Web Design", "Research", "Copywriting"].map((cat) => {
-                  const color =
-                    cat === "Web Design"
-                      ? "_orange"
-                      : cat === "Research"
-                      ? "_green"
-                      : "_purple";
-                  return (
-                    <div
-                      key={cat}
-                      className={`categories__theme ${color} ${
-                        category === cat ? "_active-category" : ""
-                      }`}
-                      onClick={() => handleCategoryClick(cat)}
-                    >
-                      <p className={color}>{cat}</p>
-                    </div>
-                  );
-                })}
+                <CategorySelector category={task.category} setCategory={(cat) => setTask({ ...task, category: cat })} />
               </div>
             </div>
 
             <button
               className="form-new__create _hover01"
               id="btnCreate"
-              onClick={handleSubmit}
+              onClick={createTask}
             >
               Создать задачу
             </button>

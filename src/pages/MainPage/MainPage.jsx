@@ -9,9 +9,10 @@ const MainPage = () => {
 
   return (
     <>
+    <Outlet />
       <Main tasks={tasks} loading={loading} error={error} />
       <Notification message={error} type="error" onClose={clearError} />
-      <Outlet />
+      
     </>
   );
 };

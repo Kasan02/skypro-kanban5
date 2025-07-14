@@ -150,7 +150,7 @@ body {
 }
 
 .pop-exit {
-  display: none;
+  /* display: none; */
   width: 100%;
   height: 100%;
   min-width: 320px;
@@ -311,7 +311,7 @@ body {
 }
 
 .pop-new-card {
-  display: none;
+  /* display: none; */
   width: 100%;
   min-width: 375px;
   height: 100%;
@@ -574,7 +574,7 @@ body {
 }
 
 .pop-browse {
-  display: none;
+  /* display: none; */
   width: 100%;
   height: 100%;
   min-width: 375px;
@@ -614,7 +614,7 @@ body {
   opacity: 1;
 }
 .pop-browse__content .theme-down {
-  display: none;
+  /* display: none; */
   margin-bottom: 20px;
 }
 .pop-browse__content .theme-top {
