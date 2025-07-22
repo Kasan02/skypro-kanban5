@@ -1,10 +1,9 @@
 import AppRoutes from "./AppRoutes";
 import Header from "./components/Header/header";
 import { TasksProvider } from "./context/TasksContext";
-import { AuthProvider, useAuth } from "./context/AuthContext"; // добавлено
+import { AuthProvider, useAuth } from "./context/AuthContext"; 
 import "./App.css";
 
-// Обёртка, чтобы получить данные из AuthContext
 const AppContent = () => {
   const { isAuth, setIsAuth, user, setUser } = useAuth();
 

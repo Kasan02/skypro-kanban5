@@ -51,7 +51,7 @@ export const TasksProvider = ({ children }) => {
 
   const addTask = async (taskData) => {
     try {
-      const newTask = await api.addTask(taskData);
+      const newTask = await addTask(taskData);
       setTasks((prev) => [...prev, newTask]);
     } catch (err) {
       console.error("Ошибка при добавлении задачи:", err);

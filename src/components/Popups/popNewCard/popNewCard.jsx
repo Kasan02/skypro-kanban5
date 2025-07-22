@@ -1,43 +1,70 @@
 import { useState } from "react";
 import Calendar from "../../Calendar/calendar.jsx";
 import { useTasks } from "../../../context/TasksContext";
+import { useAuth } from "../../../context/AuthContext";
+import CategorySelector from "../../CategorySelector/CategorySelector";
+import { Link } from "react-router-dom";
 
 const PopNewCard = () => {
   const { addTask } = useTasks();
+  const { user } = useAuth();
+  console.log("user", user);
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [category, setCategory] = useState("Web Design"); 
+  // const [status] = useState("Без статуса"); 
+  const { tasks, setTasks } = useTasks();
+  const [error, setError] = useState("");
+  const [task, setTask] = useState({
+    title: "",
+    description: "",
+    category: "Web Design",
+    status: "Без статуса",
+    date: null,
+  });
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("Web Design"); // По умолчанию
-  const [status] = useState("Без статуса"); // Можно потом сделать выбор статуса
 
-  const handleCategoryClick = (selected) => {
-    setCategory(selected);
-  };
+  // const handleCategoryClick = (selected) => {
+  //   setCategory(selected);
+  // };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!title.trim()) return;
+
+  //   const newTask = {
+  //     title,
+  //     description,
+  //     category,
+  //     status,
+  //   };
+
+  //   try {
+  //     await addTask(newTask);
+  //     setTitle("");
+  //     setDescription("");
+  //     setCategory("Web Design");
+
+  //     // Закрытие попапа
+  //     const modal = document.getElementById("popNewCard");
+  //     if (modal) modal.style.display = "none";
+  //   } catch (err) {
+  //     console.error("Ошибка при создании задачи:", err);
+  //   }
+  // };
+
+  const createTask = (e) => {
     e.preventDefault();
-
-    if (!title.trim()) return;
-
-    const newTask = {
-      title,
-      description,
-      category,
-      status,
-    };
-
-    try {
-      await addTask(newTask);
-      setTitle("");
-      setDescription("");
-      setCategory("Web Design");
-
-      // Закрытие попапа
-      const modal = document.getElementById("popNewCard");
-      if (modal) modal.style.display = "none";
-    } catch (err) {
-      console.error("Ошибка при создании задачи:", err);
-    }
+    addTask({ task, token: localStorage.getItem("token") })
+      .then((data) => {
+        console.log("Создана новая задача:", data);
+        setTasks((prev) => [...prev, data]);
+        setTask(data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (
@@ -46,20 +73,10 @@ const PopNewCard = () => {
         <div className="pop-new-card__block">
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
-            <a
-              href="#"
-              className="pop-new-card__close"
-              onClick={(e) => {
-                e.preventDefault();
-                const modal = document.getElementById("popNewCard");
-                if (modal) modal.style.display = "none";
-              }}
-            >
-              &#10006;
-            </a>
+            <Link to ="/" className="pop-new-card__close _hover01" />
 
             <div className="pop-new-card__wrap">
-              <form className="pop-new-card__form form-new" onSubmit={handleSubmit}>
+              <form className="pop-new-card__form form-new" onSubmit={createTask}>
                 <div className="form-new__block">
                   <label htmlFor="formTitle" className="subttl">
                     Название задачи
@@ -71,8 +88,8 @@ const PopNewCard = () => {
                     id="formTitle"
                     placeholder="Введите название задачи..."
                     autoFocus
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={task.title}
+                    onChange={(e) => setTask({ ...task, title: e.target.value })}
                   />
                 </div>
 
@@ -85,8 +102,8 @@ const PopNewCard = () => {
                     name="text"
                     id="textArea"
                     placeholder="Введите описание задачи..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={task.description}
+                    onChange={(e) => setTask({ ...task, description: e.target.value })}
                   />
                 </div>
               </form>
@@ -97,32 +114,14 @@ const PopNewCard = () => {
             <div className="pop-new-card__categories categories">
               <p className="categories__p subttl">Категория</p>
               <div className="categories__themes">
-                {["Web Design", "Research", "Copywriting"].map((cat) => {
-                  const color =
-                    cat === "Web Design"
-                      ? "_orange"
-                      : cat === "Research"
-                      ? "_green"
-                      : "_purple";
-                  return (
-                    <div
-                      key={cat}
-                      className={`categories__theme ${color} ${
-                        category === cat ? "_active-category" : ""
-                      }`}
-                      onClick={() => handleCategoryClick(cat)}
-                    >
-                      <p className={color}>{cat}</p>
-                    </div>
-                  );
-                })}
+                <CategorySelector category={task.category} setCategory={(cat) => setTask({ ...task, category: cat })} />
               </div>
             </div>
 
             <button
               className="form-new__create _hover01"
               id="btnCreate"
-              onClick={handleSubmit}
+              onClick={createTask}
             >
               Создать задачу
             </button>
